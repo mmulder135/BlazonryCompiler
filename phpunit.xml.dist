@@ -10,7 +10,7 @@
          processIsolation="false"
          stopOnFailure="false">
     <testsuites>
-        <testsuite name="blazoncompiler Test Suite">
+        <testsuite name="BlazonCompiler Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>

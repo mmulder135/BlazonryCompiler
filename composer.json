@@ -2,16 +2,10 @@
     "name": "blazoncompiler/compiler",
     "type": "library",
     "description": "A blazonry compiler that compiles blazon to SVG",
-    "keywords": [
-        "blazoncompiler",
-        "compiler"
-    ],
     "license": "MIT",
     "authors": [
         {
             "name": "Michael Mulder",
-            "email": "mmulder135@gmail.com",
-            "homepage": "https://github.com/mmulder135",
             "role": "Developer"
         }
     ],
@@ -24,12 +18,12 @@
     },
     "autoload": {
         "psr-4": {
-            "blazoncompiler\\compiler\\": "src"
+            "BlazonCompiler\\Compiler\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "blazoncompiler\\compiler\\": "tests"
+            "BlazonCompiler\\Compiler\\Tests\\": "tests"
         }
     },
     "scripts": {

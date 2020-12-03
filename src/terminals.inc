@@ -10,4 +10,3 @@ static $_terminals = array(
     "/^(\w+)/" => "T_IDENTIFIER",
 );
 
-?>

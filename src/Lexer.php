@@ -1,19 +1,23 @@
 <?php
 
-namespace compiler;
+namespace BlazonCompiler\Compiler;
 
 use Exception;
 
-include 'terminals.inc';
-
-/**
- * @property  _terminals
- */
 class Lexer
 {
     private $tokens;
 
-    public function __construct(string $blazon)
+    static $_terminals = array(
+        "/^(root)/" => "T_ROOT",
+        "/^(map)/" => "T_MAP",
+        "/^(\s+)/" => "T_WHITESPACE",
+        "/^(->)/" => "T_BLOCKSTART",
+        "/^(::)/" => "T_DOUBLESEPARATOR",
+        "/^(\w+)/" => "T_IDENTIFIER",
+    );
+
+    public function __construct()
     {
         $this->tokens = array();
     }
