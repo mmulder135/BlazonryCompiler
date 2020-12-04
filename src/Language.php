@@ -15,7 +15,7 @@ class Language extends LanguageFunctions
     {
         $this->dictionary = array(
             self::WS => [
-                ' '
+                '\s'
             ],
             self::COLOR => [
                 'argent', 'or',
@@ -28,7 +28,7 @@ class Language extends LanguageFunctions
                 'a'
             ],
             self::STR => [
-                '\w'
+                '\S*'
             ]
         );
 

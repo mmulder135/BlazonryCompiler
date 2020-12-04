@@ -23,6 +23,6 @@ class LexerTest extends TestCase
         $this->checkTokenization("a", [ Language::PREPOSITION]);
         $this->checkTokenization(" ", [ Language::WS]);
         $this->checkTokenization("s", [ Language::STR]);
-//        $this->checkTokenization("asdf", [Language::STR]);
+        $this->checkTokenization("asdf", [Language::PREPOSITION,Language::STR]);
     }
 }
