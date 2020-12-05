@@ -9,14 +9,11 @@ class Language extends LanguageFunctions
     const ORDINARY = 'ordinary';
     const PREPOSITION = "preposition";
     const STR = 'string';
-    const WS = 'whitespace';
+    const COMMA = 'comma';
 
     public function __construct(string $string)
     {
         $this->dictionary = array(
-            self::WS => [
-                '\s'
-            ],
             self::COLOR => [
                 'argent', 'or',
                 'azure', 'purpure', 'sable', 'vert', 'gules'
@@ -26,6 +23,9 @@ class Language extends LanguageFunctions
             ],
             self::PREPOSITION => [
                 'a'
+            ],
+            self::COMMA => [
+                ',',';'
             ],
             self::STR => [
                 '\S*'

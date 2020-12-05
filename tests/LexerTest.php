@@ -21,8 +21,14 @@ class LexerTest extends TestCase
         $this->checkTokenization("argent", [Language::COLOR]);
         $this->checkTokenization("bar", [ Language::ORDINARY]);
         $this->checkTokenization("a", [ Language::PREPOSITION]);
-        $this->checkTokenization(" ", [ Language::WS]);
         $this->checkTokenization("s", [ Language::STR]);
-        $this->checkTokenization("asdf", [Language::PREPOSITION,Language::STR]);
+        $this->checkTokenization(",", [ Language::COMMA]);
+        $this->checkTokenization("asdf", [Language::STR]);
+    }
+
+    public function testSimpleSentence(): void
+    {
+        $this->checkTokenization("azure argent", [Language::COLOR,Language::COLOR]);
+        $this->checkTokenization("bar, as", [Language::ORDINARY,Language::COMMA,Language::STR]);
     }
 }
