@@ -5,12 +5,11 @@ namespace BlazonCompiler\Compiler;
 
 use Exception;
 
-class LanguageFunctions
+abstract class LanguageFunctions
 {
     protected $dictionary = array();
     protected $regex;
     protected $offsetToToken;
-    protected $errors = array();
     protected $result = array();
     protected $tokens = array();
 

@@ -1,34 +1,57 @@
 <?php
 
-namespace compiler;
+namespace BlazonCompiler\Compiler\Tests;
 
-use BlazonCompiler\Compiler\Language;
+use BlazonCompiler\Compiler\Language\Separators;
+use BlazonCompiler\Compiler\Language\Terminals;
+use BlazonCompiler\Compiler\Lexer\Lexer;
+use BlazonCompiler\Compiler\Lexer\LexerException;
 use PHPUnit\Framework\TestCase;
 
 class LexerTest extends TestCase
 {
-
-    protected function checkTokenization(string $input, array $expected): void
+    /**
+     * @test
+     * @dataProvider basicWords
+     * @dataProvider aFewTokens
+     * @dataProvider simpleSentences
+     * @param string $blazon
+     * @param array $expectedTokens
+     * @throws LexerException
+     */
+    public function checkTokenization(string $blazon, array $expectedTokens): void
     {
-        $lan = new Language($input);
-        $tokens = $lan->getTokens();
-        $this->assertEqualS($expected, $tokens, "Failed on '{$input}'");
+        $lexer = new Lexer($blazon);
+        $tokens = $lexer->getTokens();
+        $this->assertEqualS($expectedTokens, $tokens, "Failed on '{$blazon}'");
     }
 
-    public function testBasicWords(): void
+    public function basicWords(): array
     {
-        $this->checkTokenization("azure", [ Language::COLOR]);
-        $this->checkTokenization("argent", [Language::COLOR]);
-        $this->checkTokenization("bar", [ Language::ORDINARY]);
-        $this->checkTokenization("a", [ Language::PREPOSITION]);
-        $this->checkTokenization("s", [ Language::STR]);
-        $this->checkTokenization(",", [ Language::COMMA]);
-        $this->checkTokenization("asdf", [Language::STR]);
+        return [
+            ["azure", [Terminals::TINCTURE]],
+            ["argent", [Terminals::METAL]],
+            ["bar", [Terminals::ORDINARY]],
+            ["a", [Terminals::PREPOSITION]],
+            ["s", [Terminals::STR]],
+            ["asdf", [Terminals::STR]],
+            [' ',[Separators::WS]],
+            [',',[Separators::COMMA]],
+        ];
     }
 
-    public function testSimpleSentence(): void
+    public function aFewTokens(): array
     {
-        $this->checkTokenization("azure argent", [Language::COLOR,Language::COLOR]);
-        $this->checkTokenization("bar, as", [Language::ORDINARY,Language::COMMA,Language::STR]);
+        return [
+            [', ',[Separators::COMMA,Separators::WS]],
+        ];
+    }
+
+    public function simpleSentences(): array
+    {
+        return [
+            ['Azure a bar or', [Terminals::TINCTURE, Separators::WS, Terminals::PREPOSITION, Separators::WS,Terminals::ORDINARY, Separators::WS,Terminals::METAL]],
+//            ['Azure, a bar or', [Terminals::TINCTURE, Separators::COMMA, Separators::WS, Terminals::PREPOSITION, Separators::WS,Terminals::ORDINARY, Separators::WS,Terminals::METAL]],
+        ];
     }
 }
