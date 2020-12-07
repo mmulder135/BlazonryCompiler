@@ -1,13 +1,11 @@
 <?php
-
+declare(strict_types=1);
 
 namespace BlazonCompiler\Compiler\AST;
 
-
 abstract class Node
 {
-    /** @var string */
-    protected $token;
+    protected string $token;
 
     /**
      * @return string
@@ -16,5 +14,4 @@ abstract class Node
     {
         return $this->token;
     }
-
 }

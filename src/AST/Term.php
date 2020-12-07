@@ -1,13 +1,11 @@
 <?php
-
+declare(strict_types=1);
 
 namespace BlazonCompiler\Compiler\AST;
 
-
 class Term extends Node
 {
-    /** @var string */
-    protected $word;
+    protected string $word;
 
     public function __construct(string $token, string $word)
     {

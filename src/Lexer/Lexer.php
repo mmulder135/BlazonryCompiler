@@ -1,8 +1,9 @@
 <?php
-
+declare(strict_types=1);
 
 namespace BlazonCompiler\Compiler\Lexer;
 
+use BlazonCompiler\Compiler\AST\Node;
 use BlazonCompiler\Compiler\AST\Term;
 use BlazonCompiler\Compiler\Language\Dictionary;
 use BlazonCompiler\Compiler\Language\Separators;
@@ -10,15 +11,14 @@ use BlazonCompiler\Compiler\Language\Terminals;
 
 class Lexer
 {
-
-    /** @var Dictionary */
-    protected $terminals;
-    /** @var Dictionary */
-    protected $separators;
-    /** @var array */
-    protected $result;
-    /** @var array */
-    protected $tokens;
+    /** @var Terminals */
+    protected Terminals $terminals;
+    /** @var Separators */
+    protected Separators $separators;
+    /** @var array<Term>  */
+    protected array $result;
+    /** @var array<string>  */
+    protected array $tokens;
 
     /**
      * Lexer constructor.
@@ -39,7 +39,7 @@ class Lexer
 
     /**
      * Get the result of tokenizing, [string].
-     * @return array
+     * @return array<string>
      */
     public function getTokens(): array
     {
@@ -48,7 +48,7 @@ class Lexer
 
     /**
      * Get the result of tokenizing, [Term].
-     * @return array
+     * @return array<Node>
      */
     public function getResult(): array
     {
@@ -69,21 +69,23 @@ class Lexer
         $space = false;
         // 'abc' => len = 3, blazon[0] = a, ..., blazon[2] = c
         while ($offset < $len) {
-            if (!$space){
+            if (!$space) {
                 if ($rollback) {
                     [$token, $word] = $this->matchString($blazon, $offset);
                     $rollback = false;
-                } else try {
-                    [$token, $word] = $this->match($blazon, $offset, $this->terminals);
-                } catch (LexerException $e) {
-                    //Try (another) space character
-                    $space = true;
-                    continue;
+                } else {
+                    try {
+                        [$token, $word] = $this->match($blazon, $offset, $this->terminals);
+                    } catch (LexerException) {
+                        //Try (another) space character
+                        $space = true;
+                        continue;
+                    }
                 }
             } else {
                 try {
                     [$token, $word] = $this->match($blazon, $offset, $this->separators);
-                } catch (LexerException $e) {
+                } catch (LexerException) {
                     // There is no space when after the word, rollback
                     $offset -= $this->rollbackToken();
                     $rollback = true;
@@ -105,20 +107,20 @@ class Lexer
      * @param string $blazon
      * @param int $offset
      * @param Dictionary $dictionary
-     * @return array
+     * @return array<string>
      * @throws LexerException
      */
     protected function match(string $blazon, int $offset, Dictionary $dictionary): array
     {
-        $match = preg_match($dictionary->getRegex(), $blazon, $matches, null, $offset);
+        $match = preg_match($dictionary->getRegex(), $blazon, $matches, PREG_UNMATCHED_AS_NULL, $offset);
         if (!$match) {
             throw new LexerException($blazon[$offset]);
         }
         // Get first match (second non-empty value in matches)
         $filteredMatches = array_filter($matches);
-        $index = array_keys($filteredMatches)[1] - 1;
+        $index = ((int) array_keys($filteredMatches)[1] )- 1;
         $token = $dictionary->indexToToken($index);
-        $word = $matches[0];
+        $word = (string) $matches[0];
         return [$token, $word];
     }
 
@@ -127,12 +129,12 @@ class Lexer
      *
      * @param string $blazon
      * @param int $offset
-     * @return array
+     * @return array<string>
      * @throws LexerException
      */
     protected function matchString(string $blazon, int $offset): array
     {
-        $match = preg_match($this->terminals->getStringRegex(), $blazon, $matches, null, $offset);
+        $match = preg_match($this->terminals->getStringRegex(), $blazon, $matches, PREG_UNMATCHED_AS_NULL, $offset);
         if (!$match) {
             throw new LexerException($blazon[$offset]);
         }
@@ -141,10 +143,10 @@ class Lexer
 
     /**
      * Add a token to the result and tokenlist.
-     * @param $token
-     * @param $word
+     * @param string $token
+     * @param string $word
      */
-    protected function addToken($token, $word): void
+    protected function addToken(string $token, string $word): void
     {
         $this->result[] = new Term($token, $word);
         $this->tokens[] = $token;
@@ -154,6 +156,6 @@ class Lexer
     {
         $term = array_pop($this->result);
         array_pop($this->tokens);
-        return strlen($term->getWord());
+        return strlen($term?->getWord() ?? '');
     }
 }

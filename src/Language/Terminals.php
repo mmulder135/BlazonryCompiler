@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 
 namespace BlazonCompiler\Compiler\Language;
 
@@ -11,7 +11,7 @@ class Terminals extends Dictionary
     const PREPOSITION = "preposition";
     const STR = 'string';
 
-    protected $str = '\w+';
+    protected string $str = '\w+';
 
     public function __construct()
     {
