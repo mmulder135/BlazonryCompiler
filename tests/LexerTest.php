@@ -6,7 +6,6 @@ namespace BlazonCompiler\Compiler\Tests;
 use BlazonCompiler\Compiler\Language\Separators;
 use BlazonCompiler\Compiler\Language\Terminals;
 use BlazonCompiler\Compiler\Lexer\Lexer;
-use BlazonCompiler\Compiler\Lexer\LexerException;
 use PHPUnit\Framework\TestCase;
 
 class LexerTest extends TestCase
@@ -14,28 +13,17 @@ class LexerTest extends TestCase
     /**
      * @test
      * @dataProvider basicWords
-     * @dataProvider aFewTokens
+     * @dataProvider commaCombinations
      * @dataProvider simpleSentences
+     * @dataProvider forbiddenTokens
      * @param string $blazon
      * @param array<string> $expectedTokens
-     * @throws LexerException
      */
     public function checkTokenization(string $blazon, array $expectedTokens): void
     {
         $lexer = new Lexer($blazon);
         $tokens = $lexer->getTokens();
         $this->assertEqualS($expectedTokens, $tokens, "Failed on '{$blazon}'");
-    }
-
-    /**
-     * @test
-     * @dataProvider forbiddenTokens
-     * @param string $blazon
-     */
-    public function failTokenization(string $blazon): void
-    {
-        $this->expectException(LexerException::class);
-        new Lexer($blazon);
     }
 
     /**
@@ -47,25 +35,26 @@ class LexerTest extends TestCase
             ["azure", [Terminals::TINCTURE]],
             ["argent", [Terminals::METAL]],
             ["bar", [Terminals::ORDINARY]],
-            ["a", [Terminals::PREPOSITION]],
-            ["s", [Terminals::STR]],
-            ["asdf", [Terminals::STR]],
-            ["barargent", [Terminals::STR]],
-            [' ',[Separators::WS]],
+            ["a", [Terminals::ONE]],
+            ["s", []],
+            ["asdf", []],
+            ["barargent", []],
             [',',[Separators::COMMA]],
             ['dancetty',[Terminals::PARTITION_LINE]],
-            ["\n",[Separators::WS]], //Newline need " does NOT work with '
+//            ["\n",[Separators::WS]], //Newline need " does NOT work with '
         ];
     }
 
     /**
+     * There were some bugs with comma's
      * @phpstan-return array<int, array<int, array<int, string>|string>>
      */
-    public function aFewTokens(): array
+    public function commaCombinations(): array
     {
         return [
-            [', ',[Separators::COMMA,Separators::WS]],
+            [', ',[Separators::COMMA]],
             ['argent,', [Terminals::METAL,Separators::COMMA]],
+            [',argent,', [Separators::COMMA,Terminals::METAL,Separators::COMMA]]
         ];
     }
 
@@ -78,11 +67,8 @@ class LexerTest extends TestCase
             ['Azure a bar or',
                 [
                     Terminals::TINCTURE,
-                    Separators::WS,
-                    Terminals::PREPOSITION,
-                    Separators::WS,
+                    Terminals::ONE,
                     Terminals::ORDINARY,
-                    Separators::WS,
                     Terminals::METAL
                 ]
             ],
@@ -90,25 +76,23 @@ class LexerTest extends TestCase
                 [
                     Terminals::TINCTURE,
                     Separators::COMMA,
-                    Separators::WS,
-                    Terminals::PREPOSITION,
-                    Separators::WS,
+                    Terminals::ONE,
                     Terminals::ORDINARY,
-                    Separators::WS,
                     Terminals::METAL
                 ]
             ],
+            ['asdf engrailed', [Terminals::PARTITION_LINE]],
         ];
     }
 
     /**
-     * @phpstan-return array<int, array<string>>
+     * @phpstan-return array<int, array<int, array<int, string>|string>>
      */
     public function forbiddenTokens(): array
     {
         return [
-            ['/'],
-            ['\\'],
+            ['/',[]],
+            ['\\',[]],
         ];
     }
 }

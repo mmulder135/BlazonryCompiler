@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace BlazonCompiler\Compiler\Language;
 
-class Dictionary
+abstract class Dictionary
 {
 
     /**
@@ -58,13 +58,6 @@ class Dictionary
     /**
      *
      */
-    protected function createRegex(): void
-    {
-        $tokenMap = array();
-        foreach ($this->dictionary as $name => $values) {
-            $tokenMap[$name] = implode('|', $values);
-        }
-        $this->regex = '(\G(' . implode(')|\G(', array_values($tokenMap)) . '))';
-        $this->tokensArray = array_keys($tokenMap);
-    }
+    abstract protected function createRegex(): void;
+
 }

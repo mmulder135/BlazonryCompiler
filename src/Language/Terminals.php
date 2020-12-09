@@ -5,15 +5,15 @@ namespace BlazonCompiler\Compiler\Language;
 
 class Terminals extends Dictionary
 {
-    const METAL = 'metal';
-    const TINCTURE = 'tincture';
-    const FUR = 'fur';
-    const PARTITION_LINE = 'partition line';
-    const ORDINARY = 'ordinary';
-    const PREPOSITION = "preposition";
-    const STR = 'string';
+    const METAL = 'METAL';
+    const TINCTURE = 'TINCTURE';
+    const FUR = 'FUR';
+    const PARTITION_LINE = 'PARTITION_LINE';
+    const ORDINARY = 'ORDINARY';
+    const ONE = "ONE";
+//    const STR = 'string';
 
-    protected string $str = '\w+';
+//    protected string $str = '\w+';
 
     public function __construct()
     {
@@ -33,19 +33,27 @@ class Terminals extends Dictionary
             self::ORDINARY => [
                 'bend', 'bar'
             ],
-            self::PREPOSITION => [
-                'a'
+            self::ONE => [
+                'a','an','one','1'
             ],
-            self::STR => [
-                $this->str
-            ]
+//            self::STR => [
+//                $this->str
+//            ]
         );
 
         parent::__construct();
     }
 
-    public function getStringRegex(): string
+    /**
+     *
+     */
+    protected function createRegex(): void
     {
-        return '(^' . $this->str . ')';
+        $tokenMap = array();
+        foreach ($this->dictionary as $name => $values) {
+            $tokenMap[$name] = implode('|', $values);
+        }
+        $this->regex = '(\b(' . implode(')\b|\b(', array_values($tokenMap)) . ')\b)';
+        $this->tokensArray = array_keys($tokenMap);
     }
 }
