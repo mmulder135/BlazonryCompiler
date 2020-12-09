@@ -5,7 +5,11 @@ namespace BlazonCompiler\Compiler\Language;
 
 class Dictionary
 {
-    /** @var array<string, array<int, string>>  */
+
+    /**
+     * @var array<string, array<int, string>>
+     * @phpstan-var array<mixed, array<int, string>>
+     */
     protected array $dictionary;
     /** @var string  */
     protected string $regex;
@@ -18,7 +22,8 @@ class Dictionary
     }
 
     /**
-     * @phpstan-return array<string, array<int, string>>
+     * @return array<string, array<int, string>>
+     * @phpstan-return array<mixed, array<int, string>>
      */
     public function getRules(): array
     {

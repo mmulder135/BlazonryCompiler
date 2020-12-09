@@ -33,7 +33,7 @@
         "test": "phpunit",
         "check-style": "phpcs src tests --standard=PSR2",
         "fix-style": "phpcbf src tests --standard=PSR2",
-        "mess-detector": "phpmd src,tests ansi cleancode,codesize,controversial,design,naming,unusedcode",
+        "mess-detector": "phpmd src,tests xml cleancode,codesize,controversial,design,naming,unusedcode",
         "phpstan": "phpstan analyse -l 7 src tests"
     },
     "extra": {

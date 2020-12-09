@@ -28,6 +28,17 @@ class LexerTest extends TestCase
     }
 
     /**
+     * @test
+     * @dataProvider forbiddenTokens
+     * @param string $blazon
+     */
+    public function failTokenization(string $blazon): void
+    {
+        $this->expectException(LexerException::class);
+        new Lexer($blazon);
+    }
+
+    /**
      * @phpstan-return array<int, array<int, array<int, string>|string>>
      */
     public function basicWords(): array
@@ -42,6 +53,7 @@ class LexerTest extends TestCase
             ["barargent", [Terminals::STR]],
             [' ',[Separators::WS]],
             [',',[Separators::COMMA]],
+            ['dancetty',[Terminals::PARTITION_LINE]],
             ["\n",[Separators::WS]], //Newline need " does NOT work with '
         ];
     }
@@ -86,6 +98,17 @@ class LexerTest extends TestCase
                     Terminals::METAL
                 ]
             ],
+        ];
+    }
+
+    /**
+     * @phpstan-return array<int, array<string>>
+     */
+    public function forbiddenTokens(): array
+    {
+        return [
+            ['/'],
+            ['\\'],
         ];
     }
 }

@@ -7,6 +7,8 @@ class Terminals extends Dictionary
 {
     const METAL = 'metal';
     const TINCTURE = 'tincture';
+    const FUR = 'fur';
+    const PARTITION_LINE = 'partition line';
     const ORDINARY = 'ordinary';
     const PREPOSITION = "preposition";
     const STR = 'string';
@@ -21,6 +23,12 @@ class Terminals extends Dictionary
             ],
             self::TINCTURE => [
                 '[Aa]zure', '[Pp]urpure', '[Ss]able', '[Vv]ert', '[Gg]ules'
+            ],
+            self::FUR => [
+                '[Ee]rmine', '[Vv]air'
+            ],
+            self::PARTITION_LINE => [
+                'engrailed', 'invected', 'embattled', 'indented', 'dancetty', 'wavy', 'nebuly'
             ],
             self::ORDINARY => [
                 'bend', 'bar'

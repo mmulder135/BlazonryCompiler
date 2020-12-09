@@ -114,7 +114,7 @@ class Lexer
     {
         $match = preg_match($dictionary->getRegex(), $blazon, $matches, PREG_UNMATCHED_AS_NULL, $offset);
         if (!$match) {
-            throw new LexerException($blazon[$offset]);
+            throw new LexerException($blazon, $offset);
         }
         // Get first match (second non-empty value in matches)
         $filteredMatches = array_filter($matches);
@@ -136,7 +136,7 @@ class Lexer
     {
         $match = preg_match($this->terminals->getStringRegex(), $blazon, $matches, PREG_UNMATCHED_AS_NULL, $offset);
         if (!$match) {
-            throw new LexerException($blazon[$offset]);
+            throw new LexerException($blazon, $offset);
         }
         return [$this->terminals::STR, $matches[0]];
     }
@@ -152,6 +152,10 @@ class Lexer
         $this->tokens[] = $token;
     }
 
+    /**
+     * Remove last token from result and tokenlist, returns the length of that token.
+     * @return int
+     */
     protected function rollbackToken(): int
     {
         $term = array_pop($this->result);
