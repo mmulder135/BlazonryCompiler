@@ -5,12 +5,12 @@ namespace BlazonCompiler\Compiler\Language;
 
 class Terminals extends Dictionary
 {
-    const METAL = 'METAL';
-    const TINCTURE = 'TINCTURE';
-    const FUR = 'FUR';
-    const PARTITION_LINE = 'PARTITION_LINE';
-    const ORDINARY = 'ORDINARY';
-    const ONE = "ONE";
+    const METAL = ':METAL:';
+    const TINCTURE = ':TINCTURE:';
+    const FUR = ':FUR:';
+    const PARTITION_LINE = ':PARTITION_LINE:';
+    const ORDINARY = ':ORDINARY:';
+    const ONE = ":ONE:";
 //    const STR = 'string';
 
 //    protected string $str = '\w+';
@@ -19,13 +19,13 @@ class Terminals extends Dictionary
     {
         $this->dictionary = array(
             self::METAL => [
-                '[Aa]rgent', '[Oo]r'
+                'argent', 'or'
             ],
             self::TINCTURE => [
-                '[Aa]zure', '[Pp]urpure', '[Ss]able', '[Vv]ert', '[Gg]ules'
+                'azure', 'purpure', 'sable', 'vert', 'gules'
             ],
             self::FUR => [
-                '[Ee]rmine', '[Vv]air'
+                'ermine', 'vair'
             ],
             self::PARTITION_LINE => [
                 'engrailed', 'invected', 'embattled', 'indented', 'dancetty', 'wavy', 'nebuly'

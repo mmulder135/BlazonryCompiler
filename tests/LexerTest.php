@@ -15,7 +15,7 @@ class LexerTest extends TestCase
      * @dataProvider basicWords
      * @dataProvider commaCombinations
      * @dataProvider simpleSentences
-     * @dataProvider forbiddenTokens
+     * @dataProvider invalidTokens
      * @param string $blazon
      * @param array<string> $expectedTokens
      */
@@ -41,7 +41,7 @@ class LexerTest extends TestCase
             ["barargent", []],
             [',',[Separators::COMMA]],
             ['dancetty',[Terminals::PARTITION_LINE]],
-//            ["\n",[Separators::WS]], //Newline need " does NOT work with '
+            ["\n",[Separators::WS]], //Newline need " does NOT work with '
         ];
     }
 
@@ -52,9 +52,25 @@ class LexerTest extends TestCase
     public function commaCombinations(): array
     {
         return [
-            [', ',[Separators::COMMA]],
-            ['argent,', [Terminals::METAL,Separators::COMMA]],
-            [',argent,', [Separators::COMMA,Terminals::METAL,Separators::COMMA]]
+            [', ',
+                [
+                    Separators::COMMA,
+                    Separators::WS
+                ]
+            ],
+            ['argent,',
+                [
+                    Terminals::METAL,
+                    Separators::COMMA
+                ]
+            ],
+            [',argent,',
+                [
+                    Separators::COMMA,
+                    Terminals::METAL,
+                    Separators::COMMA
+                ]
+            ]
         ];
     }
 
@@ -67,8 +83,11 @@ class LexerTest extends TestCase
             ['Azure a bar or',
                 [
                     Terminals::TINCTURE,
+                    Separators::WS,
                     Terminals::ONE,
+                    Separators::WS,
                     Terminals::ORDINARY,
+                    Separators::WS,
                     Terminals::METAL
                 ]
             ],
@@ -76,19 +95,28 @@ class LexerTest extends TestCase
                 [
                     Terminals::TINCTURE,
                     Separators::COMMA,
+                    Separators::WS,
                     Terminals::ONE,
+                    Separators::WS,
                     Terminals::ORDINARY,
+                    Separators::WS,
                     Terminals::METAL
                 ]
             ],
-            ['asdf engrailed', [Terminals::PARTITION_LINE]],
+            ['asdf engrailed',
+                [
+//                    Terminals::STRING,
+                    Separators::WS,
+                    Terminals::PARTITION_LINE
+                ]
+            ],
         ];
     }
 
     /**
      * @phpstan-return array<int, array<int, array<int, string>|string>>
      */
-    public function forbiddenTokens(): array
+    public function invalidTokens(): array
     {
         return [
             ['/',[]],

@@ -26,7 +26,7 @@ class Combinator extends Dictionary
         }
         // Add new tokens to tokensArray
         $newTokens = $dictionary->getTokens();
-        foreach ($newTokens as $token){
+        foreach ($newTokens as $token) {
             $this->tokensArray[] = $token;
         }
 //        array_push($this->tokensArray, $dictionary->getTokens());

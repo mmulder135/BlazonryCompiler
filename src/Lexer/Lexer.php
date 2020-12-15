@@ -17,6 +17,10 @@ class Lexer
     protected array $result;
     /** @var array<string>  */
     protected array $tokens;
+    /** @var string  */
+    protected string $stream;
+    /** @var string  */
+    protected string $blazon;
 
     /**
      * Lexer constructor.
@@ -32,11 +36,13 @@ class Lexer
         $this->result = [];
         $this->tokens = [];
 
-        $this->tokenize($blazon);
+        $this->blazon = mb_strtolower($blazon);
+
+        $this->tokenize();
     }
 
     /**
-     * Get the result of tokenizing.
+     * Get the result of tokenizing as tokens.
      * @return array<string>
      */
     public function getTokens(): array
@@ -45,7 +51,7 @@ class Lexer
     }
 
     /**
-     * Get the result of tokenizing.
+     * Get the result of tokenizing as Nodes
      * @return array<Node>
      */
     public function getResult(): array
@@ -54,12 +60,21 @@ class Lexer
     }
 
     /**
+     * Get the result of tokenizing as string
+     * @return string
+     */
+    public function getStream(): string
+    {
+        return $this->stream;
+    }
+
+    /**
      * Tokenize the entire blazon.
      *
-     * @param string $blazon
      */
-    protected function tokenize(string $blazon): void
+    protected function tokenize(): void
     {
+        $blazon = $this->blazon;
         $offset = 0;
         while (preg_match(
             $this->dictionary->getRegex(),
@@ -73,13 +88,15 @@ class Lexer
             $token = $this->dictionary->indexToToken($index);
             [$word,$offset] = $matches[0];
             $this->addToken($token, $word);
-            $offset += strlen($word);
-//            $blazon = substr_replace($blazon, $token, $offset, strlen($word));
+            $blazon = substr_replace($blazon, $token, $offset, strlen($word));
+            $offset += strlen($token);
         }
+        $this->stream = $blazon;
     }
 
     /**
-     * Add a token to the result and tokenlist.
+     * Add a token to the result and token arrays.
+     *
      * @param string $token
      * @param string $word
      */

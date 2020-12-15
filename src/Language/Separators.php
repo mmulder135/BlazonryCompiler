@@ -5,15 +5,15 @@ namespace BlazonCompiler\Compiler\Language;
 
 class Separators extends Dictionary
 {
-//    const WS = 'whitespace';
-    const COMMA = 'comma';
+    const WS = ':WS:';
+    const COMMA = ':COMMA:';
 
     public function __construct()
     {
         $this->dictionary = [
-//            self::WS => [
-//                '\s+'
-//            ],
+            self::WS => [
+                '\s+'
+            ],
             self::COMMA => [
                 ','
             ]
