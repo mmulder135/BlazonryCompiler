@@ -36,9 +36,6 @@ class Terminals extends Dictionary
             self::ONE => [
                 'a','an','one','1'
             ],
-//            self::STR => [
-//                $this->str
-//            ]
         );
 
         parent::__construct();

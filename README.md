@@ -34,7 +34,7 @@ $ composer test
 - [ ] Parse charges (to be extended)
 
 ### Code generator
-- [ ] Create SVG of shield with single color
+- [x] Create SVG of shield with single color
 - [ ] Generate fields
 - [ ] Generate ordinaries (to be extended)
 - [ ] Generate charges (to be extended)

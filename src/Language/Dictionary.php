@@ -59,5 +59,4 @@ abstract class Dictionary
      *
      */
     abstract protected function createRegex(): void;
-
 }

@@ -6,6 +6,7 @@ namespace BlazonCompiler\Compiler\AST;
 abstract class Node
 {
     protected string $token;
+    protected string $text;
 
     /**
      * @return string
@@ -13,5 +14,10 @@ abstract class Node
     public function getToken(): string
     {
         return $this->token;
+    }
+
+    public function getText(): string
+    {
+        return $this->text;
     }
 }
