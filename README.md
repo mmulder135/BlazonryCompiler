@@ -25,7 +25,7 @@ $ composer test
 ### Tokenizer
 - [x] Recognize basic tokens
 - [x] Handle comma's and spaces properly
-- [ ] Handle strings (unrecognized text)
+- [x] Handle strings (unrecognized text)
 
 ### Parser
 - [ ] Parse single color shield

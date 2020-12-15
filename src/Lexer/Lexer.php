@@ -8,6 +8,7 @@ use BlazonCompiler\Compiler\AST\Term;
 use BlazonCompiler\Compiler\Language\Combinator;
 use BlazonCompiler\Compiler\Language\Separators;
 use BlazonCompiler\Compiler\Language\Terminals;
+use BlazonCompiler\Compiler\Language\UnrecognizedTokens;
 
 class Lexer
 {
@@ -32,6 +33,7 @@ class Lexer
         $this->dictionary = new Combinator();
         $this->dictionary->addDictionary(new Terminals());
         $this->dictionary->addDictionary(new Separators());
+        $this->dictionary->addDictionary(new UnrecognizedTokens());
 
         $this->result = [];
         $this->tokens = [];

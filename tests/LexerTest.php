@@ -5,6 +5,7 @@ namespace BlazonCompiler\Compiler\Tests;
 
 use BlazonCompiler\Compiler\Language\Separators;
 use BlazonCompiler\Compiler\Language\Terminals;
+use BlazonCompiler\Compiler\Language\UnrecognizedTokens;
 use BlazonCompiler\Compiler\Lexer\Lexer;
 use PHPUnit\Framework\TestCase;
 
@@ -36,9 +37,9 @@ class LexerTest extends TestCase
             ["argent", [Terminals::METAL]],
             ["bar", [Terminals::ORDINARY]],
             ["a", [Terminals::ONE]],
-            ["s", []],
-            ["asdf", []],
-            ["barargent", []],
+            ["s", [UnrecognizedTokens::STR]],
+            ["asdf", [UnrecognizedTokens::STR]],
+            ["barargent", [UnrecognizedTokens::STR]],
             [',',[Separators::COMMA]],
             ['dancetty',[Terminals::PARTITION_LINE]],
             ["\n",[Separators::WS]], //Newline need " does NOT work with '
@@ -105,7 +106,7 @@ class LexerTest extends TestCase
             ],
             ['asdf engrailed',
                 [
-//                    Terminals::STRING,
+                    UnrecognizedTokens::STR,
                     Separators::WS,
                     Terminals::PARTITION_LINE
                 ]
