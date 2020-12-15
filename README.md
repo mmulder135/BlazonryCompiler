@@ -1,22 +1,9 @@
-# compiler
+# BlazonCompiler
 
-
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what
-PSRs you support to avoid any confusion with users and contributors.
+This package is (the start of) a semi-structured compiler for blazonry, it compiles a blazon into a SVG picture.
 
 ## Structure
 
-If any of the following are applicable to your project, then the directory structure should follow industry best practices by being named the following.
-
-```
-bin/        
-build/
-docs/
-config/
-src/
-tests/
-vendor/
-```
 
 
 ## Install
@@ -24,12 +11,9 @@ vendor/
 Via Composer
 
 ``` bash
-$ composer require blazoncompiler/compiler
+$ composer require BlazonCompiler/Compiler
 ```
 
-## Usage
-
-TBD
 
 ## Testing
 
@@ -37,7 +21,21 @@ TBD
 $ composer test
 ```
 
-## Credits
+## TODO
+### Tokenizer
+- [x] Recognize basic tokens
+- [x] Handle comma's and spaces properly
+- [ ] Handle strings (unrecognized text)
 
-- [Michael Mulder][link-author]
-- [All Contributors][link-contributors]
+### Parser
+- [ ] Parse single color shield
+- [ ] Parse field
+- [ ] Parse ordinaries (to be extended)
+- [ ] Parse charges (to be extended)
+
+### Code generator
+- [ ] Create SVG of shield with single color
+- [ ] Generate fields
+- [ ] Generate ordinaries (to be extended)
+- [ ] Generate charges (to be extended)
+- [ ] Generate charges on ordinaries (to be extended)
