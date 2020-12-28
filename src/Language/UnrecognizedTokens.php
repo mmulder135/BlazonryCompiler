@@ -5,12 +5,11 @@ namespace BlazonCompiler\Compiler\Language;
 
 class UnrecognizedTokens extends Dictionary
 {
-    const STR = ':STR:';
 
     public function __construct()
     {
         $this->dictionary = [
-            self::STR => [
+            Tokens::STR => [
                 '\w+'
             ]
         ];
@@ -22,7 +21,7 @@ class UnrecognizedTokens extends Dictionary
      */
     protected function createRegex(): void
     {
-        $this->regex = "((" . $this->dictionary[self::STR][0] . "))";
-        $this->tokensArray = [self::STR];
+        $this->regex = "((" . $this->dictionary[Tokens::STR][0] . "))";
+        $this->tokensArray = [Tokens::STR];
     }
 }

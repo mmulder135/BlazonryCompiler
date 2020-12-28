@@ -18,9 +18,9 @@ class NonTerm extends Node
         $this->token = $token;
         $this->children = $children;
         $this->text = '';
-        foreach ($children as $child) {
-            $this->text .= $child->getText();
-        }
+//        foreach ($children as $child) {
+//            $this->text .= $child->getText();
+//        }
     }
 
     /**

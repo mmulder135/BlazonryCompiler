@@ -5,38 +5,40 @@ namespace BlazonCompiler\Compiler\Language;
 
 class Terminals extends Dictionary
 {
-    const METAL = ':METAL:';
-    const TINCTURE = ':TINCTURE:';
-    const FUR = ':FUR:';
-    const PARTITION_LINE = ':PARTITION_LINE:';
-    const ORDINARY = ':ORDINARY:';
-    const ONE = ":ONE:";
-//    const STR = 'string';
-
-//    protected string $str = '\w+';
-
     public function __construct()
     {
-        $this->dictionary = array(
-            self::METAL => [
+        $this->dictionary = [
+            Tokens::METAL => [
                 'argent', 'or'
             ],
-            self::TINCTURE => [
+            Tokens::TINCTURE => [
                 'azure', 'purpure', 'sable', 'vert', 'gules'
             ],
-            self::FUR => [
+            Tokens::FUR => [
                 'ermine', 'vair'
             ],
-            self::PARTITION_LINE => [
+            Tokens::PARTITION_LINE => [
                 'engrailed', 'invected', 'embattled', 'indented', 'dancetty', 'wavy', 'nebuly'
             ],
-            self::ORDINARY => [
-                'bend', 'bar'
+            Tokens::ORDINARY => [
+                'fess', 'bend', 'pale', 'chevron', 'cross', 'bar'
             ],
-            self::ONE => [
+            Tokens::DIVISION => [
+                'quarterly'
+            ],
+            Tokens::PARTED => [
+                'party'
+            ],
+            Tokens::PER => [
+                'per',
+            ],
+            Tokens::AND => [
+                'and',
+            ],
+            Tokens::ONE => [
                 'a','an','one','1'
             ],
-        );
+        ];
 
         parent::__construct();
     }

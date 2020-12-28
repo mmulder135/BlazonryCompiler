@@ -3,10 +3,8 @@ declare(strict_types=1);
 
 namespace BlazonCompiler\Compiler\Tests;
 
-use BlazonCompiler\Compiler\Language\Separators;
-use BlazonCompiler\Compiler\Language\Terminals;
-use BlazonCompiler\Compiler\Language\UnrecognizedTokens;
-use BlazonCompiler\Compiler\Lexer\Lexer;
+use BlazonCompiler\Compiler\Language\Tokens;
+use BlazonCompiler\Compiler\Parser\Tokenizer;
 use PHPUnit\Framework\TestCase;
 
 class LexerTest extends TestCase
@@ -22,9 +20,12 @@ class LexerTest extends TestCase
      */
     public function checkTokenization(string $blazon, array $expectedTokens): void
     {
-        $lexer = new Lexer($blazon);
-        $tokens = $lexer->getTokens();
-        $this->assertEqualS($expectedTokens, $tokens, "Failed on '{$blazon}'");
+        $tokenizer = new Tokenizer();
+        $ir = $tokenizer->tokenize($blazon);
+        $result = array_values(array_map(function ($node) {
+            return $node->getToken();
+        }, $ir->getNodes()));
+        $this->assertEqualS($expectedTokens, $result, "Failed on '{$blazon}'");
     }
 
     /**
@@ -33,16 +34,15 @@ class LexerTest extends TestCase
     public function basicWords(): array
     {
         return [
-            ["azure", [Terminals::TINCTURE]],
-            ["argent", [Terminals::METAL]],
-            ["bar", [Terminals::ORDINARY]],
-            ["a", [Terminals::ONE]],
-            ["s", [UnrecognizedTokens::STR]],
-            ["asdf", [UnrecognizedTokens::STR]],
-            ["barargent", [UnrecognizedTokens::STR]],
-            [',',[Separators::COMMA]],
-            ['dancetty',[Terminals::PARTITION_LINE]],
-            ["\n",[Separators::WS]], //Newline need " does NOT work with '
+            ["azure", [Tokens::TINCTURE]],
+            ["argent", [Tokens::METAL]],
+            ["bar", [Tokens::ORDINARY]],
+            ["a", [Tokens::ONE]],
+            ["s", [Tokens::STR]],
+            ["asdf", [Tokens::STR]],
+            ["barargent", [Tokens::STR]],
+            [',',[Tokens::COMMA]],
+            ['dancetty',[Tokens::PARTITION_LINE]],
         ];
     }
 
@@ -55,21 +55,20 @@ class LexerTest extends TestCase
         return [
             [', ',
                 [
-                    Separators::COMMA,
-                    Separators::WS
+                    Tokens::COMMA,
                 ]
             ],
             ['argent,',
                 [
-                    Terminals::METAL,
-                    Separators::COMMA
+                    Tokens::METAL,
+                    Tokens::COMMA
                 ]
             ],
             [',argent,',
                 [
-                    Separators::COMMA,
-                    Terminals::METAL,
-                    Separators::COMMA
+                    Tokens::COMMA,
+                    Tokens::METAL,
+                    Tokens::COMMA
                 ]
             ]
         ];
@@ -83,32 +82,34 @@ class LexerTest extends TestCase
         return [
             ['Azure a bar or',
                 [
-                    Terminals::TINCTURE,
-                    Separators::WS,
-                    Terminals::ONE,
-                    Separators::WS,
-                    Terminals::ORDINARY,
-                    Separators::WS,
-                    Terminals::METAL
+                    Tokens::TINCTURE,
+                    Tokens::ONE,
+                    Tokens::ORDINARY,
+                    Tokens::METAL
                 ]
             ],
             ['Azure, a bar or',
                 [
-                    Terminals::TINCTURE,
-                    Separators::COMMA,
-                    Separators::WS,
-                    Terminals::ONE,
-                    Separators::WS,
-                    Terminals::ORDINARY,
-                    Separators::WS,
-                    Terminals::METAL
+                    Tokens::TINCTURE,
+                    Tokens::COMMA,
+                    Tokens::ONE,
+                    Tokens::ORDINARY,
+                    Tokens::METAL
                 ]
             ],
             ['asdf engrailed',
                 [
-                    UnrecognizedTokens::STR,
-                    Separators::WS,
-                    Terminals::PARTITION_LINE
+                    Tokens::STR,
+                    Tokens::PARTITION_LINE
+                ]
+            ],
+            ['per bend azure and gules',
+                [
+                    Tokens::PER,
+                    Tokens::ORDINARY,
+                    Tokens::TINCTURE,
+                    Tokens::AND,
+                    Tokens::TINCTURE
                 ]
             ],
         ];
@@ -122,6 +123,9 @@ class LexerTest extends TestCase
         return [
             ['/',[]],
             ['\\',[]],
+            [' ',[]],
+            ["\n",[]],
+            ['/bar',[Tokens::ORDINARY]]
         ];
     }
 }
