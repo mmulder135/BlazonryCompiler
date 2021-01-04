@@ -1,14 +1,14 @@
 <?xml version="1.0" standalone="no"?>
-<svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" width="600" height="660" id="HSVair">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" width="600" height="660" id="Shield">
     <defs id="Herald">
         <path d="M3,3 V260.637C3,369.135,46.339,452.459,99.763,514 C186.238,614.13,300,657,300,657 C300,657,413.762,614.13,500.237,514 C553.661,452.459,597,369.135,597,260.637V3Z" style="stroke-width:3" id="Shield1"/>
-        <pattern id="Vair"  height="240" width="100" patternUnits="userSpaceOnUse">
-            <path transform="translate(-10,0)" fill="#0036b6" d="m62.875.5-31.187 29.95v59.9l-31.188 29.95h124.75l-31.188-29.95v-59.9z"/>
-            <path transform="translate(-60,120)" fill="#0036b6" d="m62.875.5-31.187 29.95v59.9l-31.188 29.95h124.75l-31.188-29.95v-59.9z"/>
-        </pattern>
+        <mask id="Mask">
+            <rect width="100%" height="100%" fill="black"/>
+            <use xlink:href="#Shield1" fill="white"/>
+        </mask>
+        <path id="Vair" fill="#0036b6" d="m62.875.5-31.187 29.95v59.9l-31.188 29.95h124.75l-31.188-29.95v-59.9z"/>
     </defs>
-    <g>
-        <use style="fill:#ffffff;stroke:#000000" id="Field" xlink:href="#Shield1"/>
-        <use style="fill:url(#Vair)" id="FieldPattern" xlink:href="#Shield1"/>
-    </g>
+    <g mask="url(#Mask)">
+        <use style="stroke:#000000;fill:#ffffff" id="Field" xlink:href="#Shield1"/>
+        <use xlink:href="#Vair" transform="translate(0,0)"/><use xlink:href="#Vair" transform="translate(120,0)"/><use xlink:href="#Vair" transform="translate(240,0)"/><use xlink:href="#Vair" transform="translate(360,0)"/><use xlink:href="#Vair" transform="translate(480,0)"/><use xlink:href="#Vair" transform="translate(600,0)"/><use xlink:href="#Vair" transform="translate(-60,120)"/><use xlink:href="#Vair" transform="translate(60,120)"/><use xlink:href="#Vair" transform="translate(180,120)"/><use xlink:href="#Vair" transform="translate(300,120)"/><use xlink:href="#Vair" transform="translate(420,120)"/><use xlink:href="#Vair" transform="translate(540,120)"/><use xlink:href="#Vair" transform="translate(660,120)"/><use xlink:href="#Vair" transform="translate(0,240)"/><use xlink:href="#Vair" transform="translate(120,240)"/><use xlink:href="#Vair" transform="translate(240,240)"/><use xlink:href="#Vair" transform="translate(360,240)"/><use xlink:href="#Vair" transform="translate(480,240)"/><use xlink:href="#Vair" transform="translate(600,240)"/><use xlink:href="#Vair" transform="translate(-60,360)"/><use xlink:href="#Vair" transform="translate(60,360)"/><use xlink:href="#Vair" transform="translate(180,360)"/><use xlink:href="#Vair" transform="translate(300,360)"/><use xlink:href="#Vair" transform="translate(420,360)"/><use xlink:href="#Vair" transform="translate(540,360)"/><use xlink:href="#Vair" transform="translate(660,360)"/><use xlink:href="#Vair" transform="translate(0,480)"/><use xlink:href="#Vair" transform="translate(120,480)"/><use xlink:href="#Vair" transform="translate(240,480)"/><use xlink:href="#Vair" transform="translate(360,480)"/><use xlink:href="#Vair" transform="translate(480,480)"/><use xlink:href="#Vair" transform="translate(600,480)"/><use xlink:href="#Vair" transform="translate(-60,600)"/><use xlink:href="#Vair" transform="translate(60,600)"/><use xlink:href="#Vair" transform="translate(180,600)"/><use xlink:href="#Vair" transform="translate(300,600)"/><use xlink:href="#Vair" transform="translate(420,600)"/><use xlink:href="#Vair" transform="translate(540,600)"/><use xlink:href="#Vair" transform="translate(660,600)"/></g>
 </svg>

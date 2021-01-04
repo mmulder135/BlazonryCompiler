@@ -1,9 +1,13 @@
 <?xml version="1.0" standalone="no"?>
-<svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" width="600" height="660" id="Shield">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" width="600" height="660" id="Shield">
     <defs id="Herald">
         <path d="M3,3 V260.637C3,369.135,46.339,452.459,99.763,514 C186.238,614.13,300,657,300,657 C300,657,413.762,614.13,500.237,514 C553.661,452.459,597,369.135,597,260.637V3Z" style="stroke-width:3" id="Shield1"/>
+        <mask id="Mask">
+            <rect width="100%" height="100%" fill="black"/>
+            <use xlink:href="#Shield1" fill="white"/>
+        </mask>
     </defs>
-    <g>
-        <use id="Field" xlink:href="#Shield1"/>
+    <g mask="url(#Mask)">
+        <use style="fill:#fafafa;stroke:#000000" id="Field" xlink:href="#Shield1"/>
     </g>
 </svg>
