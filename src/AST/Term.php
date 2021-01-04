@@ -9,5 +9,6 @@ class Term extends Node
     {
         $this->token = $token;
         $this->text = $word;
+        $this->children = [];
     }
 }

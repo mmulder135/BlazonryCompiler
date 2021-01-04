@@ -5,9 +5,6 @@ namespace BlazonCompiler\Compiler\AST;
 
 class NonTerm extends Node
 {
-    /** @var array<Node>  */
-    protected array $children;
-
     /**
      * NonTerm constructor.
      * @param string $token
@@ -23,11 +20,4 @@ class NonTerm extends Node
 //        }
     }
 
-    /**
-     * @return Node[]
-     */
-    public function getChildren(): array
-    {
-        return $this->children;
-    }
 }
