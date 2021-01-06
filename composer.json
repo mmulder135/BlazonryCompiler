@@ -11,8 +11,7 @@
     ],
     "require": {
         "php": "8.0",
-        "ext-simplexml": "*"
-
+        "ext-dom": "*"
     },
     "require-dev": {
         "phpmd/phpmd": ">=2.8.2",

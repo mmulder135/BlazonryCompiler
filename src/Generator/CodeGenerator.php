@@ -5,116 +5,103 @@ namespace BlazonCompiler\Compiler\Generator;
 
 use BlazonCompiler\Compiler\AST\NonTerm;
 use BlazonCompiler\Compiler\Language\Tokens;
-use SimpleXMLElement;
+use DOMDocument;
+use DOMNode;
 
 class CodeGenerator
 {
-    /** @var array<string,string> */
-    private array $colors = [
-        'or' => '#e3d800',
-        'argent' => '#fafafa',
-        'azure' => '#0036b6',
-        'purpure' => '#b6008f',
-        'sable' => '#0a0a0a',
-        'vert' => '#2ab600',
-        'gules' => '#b60000'
-    ];
 
-    /** @var array<string,array<string,string|array<int,array<string,string>>>> */
-    private array $patterns = [
-        'vair' => [
-            'name' => 'Vair',
-            'height' => '240',
-            'width' => '100',
-            'paths' => [
-                [
-                    "transform"=>"translate(-10,5)",
-                    "color"=>"#0036b6",
-                    "path"=>"m62.875.5-31.187 29.95v59.9l-31.188 29.95h124.75l-31.188-29.95v-59.9z",
-                ],
-                [
-                    "transform"=>"translate(-60,125)",
-                    "color"=>"#0036b6",
-                    "path"=>"m62.875.5-31.187 29.95v59.9l-31.188 29.95h124.75l-31.188-29.95v-59.9z",
-                ],
-            ],
-        ],
-    ];
-
-    public function generate(NonTerm $root): SimpleXMLElement
+    public function generate(NonTerm $root): DOMDocument
     {
         return $this->generateField($root);
     }
 
-    public function generateField(NonTerm $field): SimpleXMLElement
+    public function generateField(NonTerm $field): DOMDocument
     {
 //        Field =     Color
 //              |   (Party?) Partition (comma?) Color Color
         $children = $field->getChildren();
         $first = $children[0];
-        // Ugly way to get the path to shield
-        $shield = new SimpleXMLElement(dirname(__FILE__, 3).'/images/shield.svg', dataIsURL: true);
+
+        $document = new DOMDocument();
+        $document->preserveWhiteSpace = false;
+        $document->formatOutput = true;
+        $document->loadXML(SVGParts::BASESHIELD);
+
         switch ($first->getToken()) {
             case Tokens::COLOR:
                 $color = $first->getChildren()[0];
                 switch ($color->getToken()) {
                     case Tokens::METAL:
                     case Tokens::TINCTURE:
-                        $color = $this->colors[$color->getText()];
-                        $this->addShield($shield, $color);
+                        $color = SVGParts::COLORS[$color->getText()];
+                        $this->setShieldColor($document, $color);
                         break;
                     case Tokens::FUR:
                         //set shield to white
-                        $this->addShield($shield, "#ffffff");
+                        $this->setShieldColor($document, "#ffffff");
 
                         // put pattern on top
-                        $this->addPattern($shield, $this->patterns[$color->getText()]);
+                        $this->addFurPattern($document, $color->getText());
                         break;
                 }
                 break;
             default:
                 break;
         }
-        return $shield;
+        return $document;
     }
 
     /**
-     * @param SimpleXMLElement $shield
+     * @param DOMDocument $document
      * @param string $color
      */
-    protected function addShield(SimpleXMLElement $shield, string $color): void
+    protected function setShieldColor(DOMDocument $document, string $color): void
     {
-        $shield->g->use["style"] = "stroke:#000000;fill:".$color;
+        // doc -> svg -> g -> use
+        $document->lastChild->lastChild->firstChild->setAttribute("style", "stroke:#000000;fill:".$color);
     }
 
     /**
-     * @param SimpleXMLElement $shield
-     * @param array $pattern
+     * @param DOMDocument $document
      */
-    protected function addPattern(SimpleXMLElement $shield, array $pattern): void
+    protected function addFurPattern(DOMDocument $document, string $fur): void
     {
-        // Add def for one
-        $part = $shield->defs->addChild('path');
-        $part->addAttribute("id", "Vair");
-        $part->addAttribute("fill", "#0036b6");
-        $path = "m62.875.5-31.187 29.95v59.9l-31.188 29.95h124.75l-31.188-29.95v-59.9z";
-        $part->addAttribute("d", $path);
+        // doc -> svg -> [defs,g]
+        $defs = $document->lastChild->firstChild;
+        $g = $document->lastChild->lastChild;
 
-        $main = $shield->g;
+        // Add definition vair shape
+        $this->addXML($document, $defs, SVGParts::FURS[$fur]);
+
+        //Add definition mask
+        $this->addXML($document, $defs, SVGParts::MASK);
+        // Use mask
+        $g->setAttribute("mask", "url(#Mask)");
+
         for ($y = 0; $y <= 660; $y += 120) {
             // make normal row
             for ($x = 0; $x <= 660; $x += 120) {
-                $use = $main->addChild("use");
-                $use->addAttribute("xlink:href", "#Vair", "http://www.w3.org/1999/xlink");
-                $use->addAttribute("transform", "translate({$x},{$y})");
+                $element = $document->createElement("use");
+                $element->setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", "#".$fur);
+                $element->setAttribute("transform", "translate({$x},{$y})");
+                $g->appendChild($element);
             }
             //make other row
             $y+=120;
             for ($x = -60; $x <= 660; $x += 120) {
-                $use = $main->addChild("use");
-                $use->addAttribute("xlink:href", "#Vair", "http://www.w3.org/1999/xlink");
-                $use->addAttribute("transform", "translate({$x},{$y})");
+                $element = $document->createElement("use");
+                $element->setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", "#".$fur);
+                $element->setAttribute("transform", "translate({$x},{$y})");
+                $g->appendChild($element);
             }
         }
+    }
+
+    protected function addXML(DOMDocument $document, DOMNode $parent, string $xml): void
+    {
+        $fragment = $document->createDocumentFragment();
+        $fragment->appendXML($xml);
+        $parent->appendChild($fragment);
     }
 }
