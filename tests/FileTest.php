@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace BlazonCompiler\Compiler\Tests;
 
+use BlazonCompiler\Compiler\AST\NonTerm;
 use BlazonCompiler\Compiler\Generator\CodeGenerator;
+use BlazonCompiler\Compiler\Language\Tokens;
 use BlazonCompiler\Compiler\Parser\Parser;
 use PHPUnit\Framework\TestCase;
 
@@ -14,8 +16,8 @@ class FileTest extends TestCase
     {
         $g = new CodeGenerator();
         $parser = new Parser();
-        $ir = $parser->parse('ermine');
-        $f = $g->generateField($ir->getNodes()[0]);
+        $ir = $parser->parse('per bend argent and azure');
+        $f = $g->generate(new NonTerm(Tokens::SHIELD,$ir->getNodes()));
         file_put_contents('test.svg', $f->saveXML());
     }
 }

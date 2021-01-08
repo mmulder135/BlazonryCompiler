@@ -13,11 +13,16 @@ class ShortMatches extends Dictionary
                 [Tokens::TINCTURE],
                 [Tokens::FUR]
             ],
+            Tokens::DIVISION => [
+              [Tokens::PER, Tokens::ORDINARY],
+            ],
             Tokens::PARTITION => [
+                [Tokens::DIVISION, Tokens::PARTITION_LINE, Tokens::SINISTER],
+                [Tokens::DIVISION, Tokens::SINISTER, Tokens::PARTITION_LINE],
+                [Tokens::DIVISION, Tokens::PARTITION_LINE],
+                [Tokens::DIVISION, Tokens::SINISTER],
                 [Tokens::DIVISION],
-                [Tokens::PER, Tokens::ORDINARY],
-                [Tokens::PER, Tokens::ORDINARY, Tokens::SINISTER],
-            ]
+            ],
         ];
         parent::__construct();
     }

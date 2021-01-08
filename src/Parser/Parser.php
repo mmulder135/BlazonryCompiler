@@ -5,8 +5,6 @@ namespace BlazonCompiler\Compiler\Parser;
 
 use BlazonCompiler\Compiler\AST\IR;
 use BlazonCompiler\Compiler\Language\Dictionary;
-use BlazonCompiler\Compiler\Language\FieldMatches;
-use BlazonCompiler\Compiler\Language\Tokens;
 use BlazonCompiler\Compiler\Language\ShortMatches;
 
 class Parser
@@ -20,22 +18,13 @@ class Parser
         $tokenizer = new Tokenizer();
         $ir = $tokenizer->tokenize($blazon);
 
-        // level 2: remove unwanted tokens
-        $terms = $ir->getNodes();
-        foreach ($terms as $offset => $term) {
-            $token = $term->getToken();
-            if (($token == Tokens::WS) || ($token == Tokens::AND)) {
-                $ir->removeNode($offset);
-            }
-        }
-        $ir->fixOffsets();
-
-        // level 3: short matches
-        $this->match($ir, new ShortMatches());
+        // level 2: short matches
+        while ($this->match($ir, new ShortMatches()));
 
 
-        // level 4: field matches
-        $this->match($ir, new FieldMatches());
+        // level 3 : find and parse field declaration
+        // Blazon should start with field declaration
+        $fieldFound = FieldMatcher::parseField($ir);
 
         return $ir;
     }
@@ -44,12 +33,13 @@ class Parser
      * Do one loop through the IR with the given dictionary
      * @param IR $ir
      * @param Dictionary $dictionary
-     * @return IR
+     * @return bool
      */
-    public function match(IR $ir, Dictionary $dictionary): IR
+    public function match(IR $ir, Dictionary $dictionary): bool
     {
         $string = $ir->getString();
         $offset = 0;
+        $foundMatch = false;
         while (preg_match(
             $dictionary->getRegex(),
             $string,
@@ -57,6 +47,7 @@ class Parser
             PREG_OFFSET_CAPTURE|PREG_UNMATCHED_AS_NULL,
             $offset
         )) {
+            $foundMatch = true;
             $filteredMatches = array_filter($matches, fn($v) => $v[0] != null);
             $index = ((int) array_keys($filteredMatches)[1] )- 1;
             $token = $dictionary->indexToToken($index);
@@ -65,6 +56,6 @@ class Parser
             $offset += strlen($word);
         }
         $ir->fixOffsets();
-        return $ir;
+        return $foundMatch;
     }
 }

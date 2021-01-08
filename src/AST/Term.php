@@ -11,4 +11,14 @@ class Term extends Node
         $this->text = $word;
         $this->children = [];
     }
+
+    public function hasChildToken(string $token): bool
+    {
+        return false;
+    }
+
+    public function getChildrenByToken(string $token): array
+    {
+        return [];
+    }
 }

@@ -35,4 +35,8 @@ abstract class Node
     {
         return $this->children;
     }
+
+    abstract public function hasChildToken(string $token): bool;
+
+    abstract public function getChildrenByToken(string $token): array;
 }

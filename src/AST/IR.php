@@ -24,8 +24,9 @@ class IR
      * @param string $token
      * @param string $word
      * @param int $offset
+     * @param string[] $ignoreTokens
      */
-    public function addMatch(string $token, string $word, int $offset): void
+    public function addMatch(string $token, string $word, int $offset, array $ignoreTokens = []): void
     {
         $end = $offset + strlen($word);
         $children = [];
@@ -34,7 +35,9 @@ class IR
             if ($offset <= $index) {
                 if ($index <= $end) {
                     unset($this->nodes[$index]);
-                    $children[] = $node;
+                    if (!in_array($node->getToken(),$ignoreTokens)){
+                        $children[] = $node;
+                    }
                 } else {
                     // Past the end of the match
                     break;
@@ -45,6 +48,24 @@ class IR
         ksort($this->nodes);
     }
 
+//    /**
+//     * Matches the array nodes<offset,Node> to token. Also fixes offsets
+//     * @param string $token
+//     * @param array<int> $offsets
+//     */
+//    public function addMatchNodes(string $token, int $lowestOffset, int $highestOffset)
+//    {
+//        $nodes = [];
+//        $offset = $lowestOffset;
+//        while ($offset <=- $highestOffset){
+//            $nodes[] = $node = $this->nodes[$offset];
+//            unset($node);
+//        }
+//        $this->nodes[$lowestOffset] = new NonTerm($token, $nodes);
+//        ksort($this->nodes);
+//        $this->fixOffsets();
+//    }
+
     /**
      * Removes a node from the IR. DESTRUCTIVE
      * @param int $offset
@@ -54,6 +75,10 @@ class IR
         unset($this->nodes[$offset]);
     }
 
+    /**
+     * Fix the offsets of the nodes,
+     * should be done after any editing
+     */
     public function fixOffsets(): void
     {
         $offset = 0;

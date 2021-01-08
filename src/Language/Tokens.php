@@ -30,4 +30,5 @@ final class Tokens
     const COLOR = 'COLOR';
     const PARTITION = 'PARTITION';
     const FIELD = 'FIELD';
+    const SHIELD = 'SHIELD';
 }

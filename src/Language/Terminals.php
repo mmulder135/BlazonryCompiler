@@ -29,6 +29,9 @@ class Terminals extends Dictionary
             Tokens::PARTED => [
                 'party'
             ],
+            Tokens::SINISTER => [
+                'sinister'
+            ],
             Tokens::PER => [
                 'per',
             ],

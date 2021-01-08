@@ -15,9 +15,43 @@ class NonTerm extends Node
         $this->token = $token;
         $this->children = $children;
         $this->text = '';
-//        foreach ($children as $child) {
-//            $this->text .= $child->getText();
-//        }
+        foreach ($children as $child) {
+            if ($this->text == '') {
+                $this->text = $child->getText();
+            } else {
+                $this->text .= ' '.$child->getText();
+            }
+        }
     }
 
+    public function hasChildToken(string $token): bool
+    {
+        foreach ($this->children as $node) {
+            if ($node->getToken() == $token) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function getChildrenByToken(string $token): array
+    {
+        $result = [];
+        foreach ($this->children as $node){
+            if ($node->getToken() == $token) {
+                $result[] = $node;
+            }
+        }
+        return $result;
+    }
+
+    public function getFirst(string $token): ?Node
+    {
+        foreach ($this->children as $node){
+            if ($node->getToken() == $token) {
+                return $node;
+            }
+        }
+        return null;
+    }
 }
