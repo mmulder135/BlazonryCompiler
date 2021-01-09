@@ -53,23 +53,28 @@ Ordinary = 'fess' | 'bend' | 'pale' | 'chevron' | 'cross'
 Division = 'quarterly'
 Sinister = 'sinister'
 Parted = 'party'
+PartitionLine = 'engrailed', 'invected', 'embattled', 'indented', 'dancetty', 'wavy', 'nebuly'
 ```
-Level 2: Remove unneeded tokens
-``` 
-WS, AND
-```
-Level 3: short matches - simple short matches, generalizations
+Level 2: short matches - simple short matches, generalizations
 ```
 Color = Metal | Tincture | Fur
 Partition   =   Division 
             |   Per Ordinary 
-            |   Per Ordinary Sinister
 ```
-Level 4: field - slightly more complicated matches resulting in the field declaration
+Level 3: field - Flexible parsing that attempts to find a field declaration \
+This step does not rely on simple regexes, below is for understanding
 ```
 Field =     Color 
-        |   (Party?) Partition (comma?) Color Color
+        |   Parted? Partition (PartitionLine | Sinister)? Color Color
 ```
+Rules:
+
+| Token         | Indicates need of |
+| ------        | ------------------|
+| Parted        | Partition         |
+| Partition     | Color, Color      |
+Anything that is between the first token and the point that all the needed tokens are found will become part of field.
+Tokens that do not add meaning will be removed from the parse tree, these are: Comma, And, Parted.
 #### Examples:
 Single color:
 ```
@@ -90,6 +95,9 @@ in a "party" coloured field, that colour or tincture is mentioned first which oc
 
 Partition with special lines:
 ``` 
-Per bend engrailed azure and gules
+per bend sinister argent and sable
+per bend engrailed argent and sable
+per bend sinister engrailed argent and sable
+per bend engrailed sinister argent and sable
 Party per pale embattled azure and or
 ```

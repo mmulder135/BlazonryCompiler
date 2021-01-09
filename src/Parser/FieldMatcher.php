@@ -57,7 +57,7 @@ class FieldMatcher
                 }
             }
         }
-        // TODO: remove comma's and linking words at the end
+        // TODO: remove comma's and linking words at the end?
         $ir->addMatch(Tokens::FIELD, $word, 0, self::IGNORE);
         return true;
     }

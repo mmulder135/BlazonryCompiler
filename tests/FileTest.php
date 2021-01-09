@@ -16,7 +16,7 @@ class FileTest extends TestCase
     {
         $g = new CodeGenerator();
         $parser = new Parser();
-        $ir = $parser->parse('per bend argent and azure');
+        $ir = $parser->parse('per bend vair and or');
         $f = $g->generate(new NonTerm(Tokens::SHIELD,$ir->getNodes()));
         file_put_contents('test.svg', $f->saveXML());
     }
