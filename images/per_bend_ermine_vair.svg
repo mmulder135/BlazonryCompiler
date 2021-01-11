@@ -6,7 +6,7 @@
         <mask id="Mask">
             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#Shield1" fill="white"/>
         </mask>
-    <mask id="bend"><polygon transform="scale(-1,1) translate(-600,0)" points="0,0 600,660 600,0" fill="white"/></mask>
+    <mask id="bend"><polygon points="0,0 600,660 600,0" fill="white"/></mask>
             <g id="ermine">
                 <circle cx="40" cy="55" r="10"/>
                 <circle cx="60" cy="55" r="10"/>

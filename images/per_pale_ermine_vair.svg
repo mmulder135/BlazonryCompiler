@@ -6,7 +6,7 @@
         <mask id="Mask">
             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#Shield1" fill="white"/>
         </mask>
-    <mask id="bend"><polygon transform="scale(-1,1) translate(-600,0)" points="0,0 600,660 600,0" fill="white"/></mask>
+    <mask id="pale"><polygon points="0,0 300,0 300,660 0,660" fill="white"/></mask>
             <g id="ermine">
                 <circle cx="40" cy="55" r="10"/>
                 <circle cx="60" cy="55" r="10"/>
@@ -57,8 +57,8 @@
       <use xlink:href="#vair" transform="translate(540,600)"/>
       <use xlink:href="#vair" transform="translate(660,600)"/>
     </g>
-    <use mask="url(#bend)" fill="#ffffff" xlink:href="#Shield1"/>
-    <g id="PatternGroup" mask="url(#bend)">
+    <use mask="url(#pale)" fill="#ffffff" xlink:href="#Shield1"/>
+    <g id="PatternGroup" mask="url(#pale)">
       <use xlink:href="#ermine" transform="translate(0,0)"/>
       <use xlink:href="#ermine" transform="translate(120,0)"/>
       <use xlink:href="#ermine" transform="translate(240,0)"/>

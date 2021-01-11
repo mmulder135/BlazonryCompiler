@@ -35,12 +35,17 @@ class CodeGenerator
 
         // generate the field
         if ($root->hasChildToken(Tokens::FIELD)) {
-            $this->generateField($root->getChildrenByToken(Tokens::FIELD)[0], $document);
+            $this->generateField($root->getFirst(Tokens::FIELD), $document);
         } else {
             // No field definition, generate gray field
             // TODO: error?
             $color = GeneratorDefinitions::getColor('error');
             $this->setShieldColor($document, $color);
+        }
+
+        $ordinaries = $root->getChildrenByToken(Tokens::FULL_ORDINARY);
+        foreach ($ordinaries as $ordinary) {
+            $this->generateOrdinary($document, $ordinary);
         }
 
         // generate ordinaries
@@ -49,7 +54,12 @@ class CodeGenerator
         return $document;
     }
 
-    private function generateField(NonTerm $field, DOMDocument $document): void
+    /**
+     * @param Node $field
+     * @param DOMDocument $document
+     * @throws Exception
+     */
+    private function generateField(Node $field, DOMDocument $document): void
     {
         // FIELD = PARTITION COLOR COLOR | COLOR
         if ($field->hasChildToken(Tokens::PARTITION)) {
@@ -109,7 +119,7 @@ class CodeGenerator
      * @param string $fur
      * @param string|null $mask
      */
-    protected function addFurPattern(DOMDocument $document, string $fur, ?string $maskName = null): void
+    protected function addFurPattern(DOMDocument $document, string $fur, ?string $patternName = null): void
     {
         // doc -> svg -> [defs,g]
         $defs = $document->lastChild->firstChild;
@@ -124,12 +134,14 @@ class CodeGenerator
         $g->appendChild($patternGroup);
 
         //Add definition mask
-        $this->addXML($document, $defs, GeneratorDefinitions::MASK);
+        if (!$this->checkMaskExists($document,"Mask")){
+            $this->addXML($document, $defs, GeneratorDefinitions::MASK);
+        }
         // Add mask to general group
         $g->setAttribute("mask", "url(#Mask)");
-        if ($maskName) {
+        if ($patternName) {
             // add partition mask to patterngroup
-            $patternGroup->setAttribute("mask", "url(#{$maskName})");
+            $patternGroup->setAttribute("mask", "url(#{$patternName})");
         }
 
         for ($y = 0; $y <= 660; $y += 120) {
@@ -171,32 +183,35 @@ class CodeGenerator
      * @param DOMDocument $document
      * @param string $partition
      * @param NonTerm $colorNode
-     * @param bool|null $sinister
+     * @param bool $sinister
      * @throws Exception
      */
-    protected function addPartition(DOMDocument $document,
+    protected function addPartition(
+        DOMDocument $document,
         string $partition,
         NonTerm $colorNode,
-        bool $sinister = false)
-    {
+        bool $sinister = false
+    ) {
         //Create mask
-        $points = GeneratorDefinitions::getPartitionMaskPoints($partition);
-        if (!$points) {
-            // TODO: proper errors
-            throw new Exception("Can't generate Partition");
+        if (!$this->checkMaskExists($document, $partition)) {
+            $points = GeneratorDefinitions::getPartitionMaskPoints($partition);
+            if (!$points) {
+                // TODO: proper errors
+                throw new Exception("Can't generate Partition");
+            }
+    //        $this->addXML($document, $document->lastChild->firstChild, $mask);
+            $poly = $document->createElement("polygon");
+            $poly->setAttribute("points", $points);
+            $poly->setAttribute("fill", "white");
+            if ($sinister && GeneratorDefinitions::canBeSinister($partition)) {
+                $poly->setAttribute("transform", GeneratorDefinitions::SINISTERTRANSFORM);
+            }
+            $mask = $document->createElement("mask");
+            $mask->appendChild($poly);
+            $mask->setAttribute("id", $partition);
+            // defs -> append mask
+            $document->lastChild->firstChild->appendChild($mask);
         }
-//        $this->addXML($document, $document->lastChild->firstChild, $mask);
-        $poly = $document->createElement("polygon");
-        $poly->setAttribute("points", $points);
-        $poly->setAttribute("fill", "white");
-        if ($sinister && GeneratorDefinitions::canBeSinister($partition)) {
-            $poly->setAttribute("transform",GeneratorDefinitions::SINISTERTRANSFORM);
-        }
-        $mask = $document->createElement("mask");
-        $mask->appendChild($poly);
-        $mask->setAttribute("id", $partition);
-        // defs -> append mask
-        $document->lastChild->firstChild->appendChild($mask);
 
         $type = $colorNode->getChildren()[0]->getToken();
         switch ($type) {
@@ -229,5 +244,49 @@ class CodeGenerator
         $part->setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", "#Shield1");
         $document->lastChild->lastChild->appendChild($part);
         // dco -> svg -> g -> append
+    }
+
+    protected function generateOrdinary(DOMDocument $document, NonTerm $ordinary)
+    {
+        $sinister = $ordinary->hasChildToken(Tokens::SINISTER);
+        $shape = $ordinary->getFirst(Tokens::ORDINARY)->getText();
+        $colorName = $ordinary->getFirst(Tokens::COLOR)->getText();
+
+        $color = GeneratorDefinitions::getColor($colorName);
+        $points = GeneratorDefinitions::getOrdinaryPoints($shape);
+        if (!$points || !$color) {
+            // TODO: proper errors
+            throw new Exception("Can't generate ordinary");
+        }
+
+        // Add mask if it doesn't exist
+        if(!$this->checkMaskExists($document,"Mask")) {
+            $this->addXML($document, $document->lastChild->firstChild, GeneratorDefinitions::MASK);
+        }
+
+        // Add ordinary shape
+        $poly = $document->createElement("polygon");
+        $poly->setAttribute("mask", "url(#Mask)");
+        $poly->setAttribute("points", $points);
+        $poly->setAttribute("fill", $color);
+        if ($sinister && GeneratorDefinitions::canBeSinister($shape)) {
+            $poly->setAttribute("transform", GeneratorDefinitions::SINISTERTRANSFORM);
+        }
+        $document->lastChild->lastChild->appendChild($poly);
+    }
+
+    private function checkMaskExists(DOMDocument $document, string $id): bool
+    {
+        $masks = $document->getElementsByTagName("mask");
+        $length = $masks->length;
+        for ($i = 0; $i < $length; $i++){
+            $mask = $masks->item($i);
+            // if id = id return true
+            $name = $mask->getAttribute("id");
+            if ($name == $id) {
+                return true;
+            }
+        }
+        return false;
     }
 }

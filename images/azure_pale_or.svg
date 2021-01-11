@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="600" height="660" id="Shield" style="background-color:#d3d3d3">
+  <defs id="Herald"><path d="M3,3 V260.637C3,369.135,46.339,452.459,99.763,514 C186.238,614.13,300,657,300,657 C300,657,413.762,614.13,500.237,514 C553.661,452.459,597,369.135,597,260.637V3Z" id="Shield1"/>
+        <mask id="Mask">
+            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#Shield1" fill="white"/>
+        </mask>
+    </defs>
+  <g>
+    <use id="Background" xlink:href="#Shield1" fill="#0036b6"/>
+    <polygon mask="url(#Mask)" points="200,0 400,0 400,660 200,660" fill="#e3d800"/>
+  </g>
+</svg>

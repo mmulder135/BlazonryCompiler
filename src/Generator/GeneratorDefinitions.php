@@ -52,6 +52,12 @@ class GeneratorDefinitions
         "bend" => '0,0 600,660 600,0',
         "pale" => '0,0 300,0 300,660 0,660',
     ];
+
+    private const ORDINARIES = [
+        "bend" => '0,0 150,0 600,510 600,660 450,660 0,150',
+        "pale" => '200,0 400,0 400,660 200,660',
+    ];
+
     private const CANBESINISTER = [
         "bend"
     ];
@@ -76,6 +82,14 @@ class GeneratorDefinitions
     {
         if (array_key_exists($partition, self::PARTITIONMASKS)) {
             return self::PARTITIONMASKS[$partition];
+        }
+        return null;
+    }
+
+    public static function getOrdinaryPoints(string $ordinary): ?string
+    {
+        if(array_key_exists($ordinary,self::ORDINARIES)) {
+            return self::ORDINARIES[$ordinary];
         }
         return null;
     }

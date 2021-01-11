@@ -31,4 +31,5 @@ final class Tokens
     const PARTITION = 'PARTITION';
     const FIELD = 'FIELD';
     const SHIELD = 'SHIELD';
+    const FULL_ORDINARY = 'FULL_ORDINARY';
 }
