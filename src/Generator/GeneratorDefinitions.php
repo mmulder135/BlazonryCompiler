@@ -21,6 +21,8 @@ class GeneratorDefinitions
         </mask>
     ';
 
+    const SINISTERTRANSFORM = 'scale(-1,1) translate(-600,0)';
+
     private const COLORS = [
         'or' => '#e3d800',
         'argent' => '#fafafa',
@@ -47,16 +49,11 @@ class GeneratorDefinitions
     ];
 
     private const PARTITIONMASKS = [
-        "bend" => '
-        <mask id="bend">
-          <polygon points="0,0 600,660 600,0" fill="white"/>
-        </mask>
-        ',
-        "pale" => '
-        <mask id="pale">
-          <rect width="300" height="660" fill="white"/>
-        </mask>
-        ',
+        "bend" => '0,0 600,660 600,0',
+        "pale" => '0,0 300,0 300,660 0,660',
+    ];
+    private const CANBESINISTER = [
+        "bend"
     ];
 
     public static function getColor(string $color): string
@@ -75,11 +72,16 @@ class GeneratorDefinitions
         return null;
     }
 
-    public static function getPartitionMask(string $partition): ?string
+    public static function getPartitionMaskPoints(string $partition): ?string
     {
         if (array_key_exists($partition, self::PARTITIONMASKS)) {
             return self::PARTITIONMASKS[$partition];
         }
         return null;
+    }
+
+    public static function canBeSinister(string $partition): bool
+    {
+        return in_array($partition, self::CANBESINISTER);
     }
 }

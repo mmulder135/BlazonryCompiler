@@ -189,6 +189,9 @@ class ParseFieldTest extends TestCase
                 new Term(Tokens::SINISTER, 'sinister'),
                 new NonTerm(Tokens::COLOR, [new Term(Tokens::METAL, 'argent')]),
             ]],
+            ["bend",[
+                new Term(Tokens::ORDINARY, 'bend')
+            ]]
         ];
     }
 

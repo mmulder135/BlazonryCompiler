@@ -14,6 +14,18 @@ use Exception;
 class CodeGenerator
 {
 
+    public function generateWithEdge(NonTerm $root): DOMDocument
+    {
+        $document = $this->generate($root);
+        $edge = $document->createElement("use");
+        $edge->setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", "#Shield1");
+        $edge->setAttribute("fill", "none");
+        $edge->setAttribute("stroke-width", "2");
+        $edge->setAttribute("stroke", "#000000");
+        $document->lastChild->appendChild($edge);
+        return $document;
+    }
+
     public function generate(NonTerm $root): DOMDocument
     {
         $document = new DOMDocument();
@@ -50,7 +62,8 @@ class CodeGenerator
             [$color1, $color2] = $field->getChildrenByToken(Tokens::COLOR);
 
             $this->setColor($document, $color2);
-            $this->addPartition($document, $partition->getText(), $color1);
+            $sinister = $field->hasChildToken(Tokens::SINISTER);
+            $this->addPartition($document, $partition->getText(), $color1, $sinister);
         } else {
             // FIELD = COLOR
             $color = $field->getFirst(Tokens::COLOR);
@@ -107,13 +120,13 @@ class CodeGenerator
 
         // Create group to place pattern in
         $patternGroup = $document->createElement("g");
-        $patternGroup->setAttribute("id","PatternGroup");
+        $patternGroup->setAttribute("id", "PatternGroup");
         $g->appendChild($patternGroup);
 
         //Add definition mask
         $this->addXML($document, $defs, GeneratorDefinitions::MASK);
         // Add mask to general group
-        $g->setAttribute("mask","url(#Mask)");
+        $g->setAttribute("mask", "url(#Mask)");
         if ($maskName) {
             // add partition mask to patterngroup
             $patternGroup->setAttribute("mask", "url(#{$maskName})");
@@ -154,15 +167,36 @@ class CodeGenerator
         $parent->appendChild($fragment);
     }
 
-    protected function addPartition(DOMDocument $document, string $partition, NonTerm $colorNode)
+    /**
+     * @param DOMDocument $document
+     * @param string $partition
+     * @param NonTerm $colorNode
+     * @param bool|null $sinister
+     * @throws Exception
+     */
+    protected function addPartition(DOMDocument $document,
+        string $partition,
+        NonTerm $colorNode,
+        bool $sinister = false)
     {
         //Create mask
-        $mask = GeneratorDefinitions::getPartitionMask($partition);
-        if (!$mask) {
+        $points = GeneratorDefinitions::getPartitionMaskPoints($partition);
+        if (!$points) {
             // TODO: proper errors
             throw new Exception("Can't generate Partition");
         }
-        $this->addXML($document, $document->lastChild->firstChild, $mask);
+//        $this->addXML($document, $document->lastChild->firstChild, $mask);
+        $poly = $document->createElement("polygon");
+        $poly->setAttribute("points", $points);
+        $poly->setAttribute("fill", "white");
+        if ($sinister && GeneratorDefinitions::canBeSinister($partition)) {
+            $poly->setAttribute("transform",GeneratorDefinitions::SINISTERTRANSFORM);
+        }
+        $mask = $document->createElement("mask");
+        $mask->appendChild($poly);
+        $mask->setAttribute("id", $partition);
+        // defs -> append mask
+        $document->lastChild->firstChild->appendChild($mask);
 
         $type = $colorNode->getChildren()[0]->getToken();
         switch ($type) {
@@ -170,7 +204,7 @@ class CodeGenerator
             case Tokens::TINCTURE:
                 $color = GeneratorDefinitions::getColor($colorNode->getText());
                 $this->addColorUseStatement($document, $partition, $color);
-            break;
+                break;
             case Tokens::FUR:
                 //set shield to white
                 $color = "#ffffff";
@@ -184,8 +218,8 @@ class CodeGenerator
                 $color = GeneratorDefinitions::getColor('error');
                 $this->addColorUseStatement($document, $partition, $color);
         }
-
     }
+
 
     protected function addColorUseStatement(DOMDocument $document, string $maskName, string $color): void
     {

@@ -14,8 +14,8 @@ class FieldMatcher
      * @var array<string, string[]>
      */
     private const NEEDED = [
-        Tokens::PARTITION => [Tokens::COLOR,Tokens::COLOR],
-        Tokens::PARTED => [Tokens::PARTITION]
+        Tokens::PARTITION => [Tokens::COLOR], // Need one more color, total =2
+        Tokens::PARTED => [Tokens::PARTITION] // Parted indicates a partition
     ];
 
     /**
@@ -30,7 +30,7 @@ class FieldMatcher
     {
         $offset = 0;
         $word = '';
-        $queue = [$ir->getNodes()[0]->getToken()]; // to start off loop
+        $queue = [Tokens::COLOR]; // at least one color is always needed
         $lastIndex = array_key_last($ir->getNodes());
         while (!empty($queue)) {
             if ($offset > $lastIndex) {

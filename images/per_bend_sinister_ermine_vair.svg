@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="600" height="660" id="Shield" style="background-color:#d3d3d3">
+  <defs id="Herald"><path d="M3,3 V260.637C3,369.135,46.339,452.459,99.763,514 C186.238,614.13,300,657,300,657 C300,657,413.762,614.13,500.237,514 C553.661,452.459,597,369.135,597,260.637V3Z" id="Shield1"/>
+            <path id="vair" fill="#0036b6" d="m62.875.5-31.187 29.95v59.9l-31.188 29.95h124.75l-31.188-29.95v-59.9z"/>
+
+        <mask id="Mask">
+            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#Shield1" fill="white"/>
+        </mask>
+    <mask id="bend"><polygon transform="scale(-1,1) translate(-600,0)" points="0,0 600,660 600,0" fill="white"/></mask>
+            <g id="ermine">
+                <circle cx="40" cy="55" r="10"/>
+                <circle cx="60" cy="55" r="10"/>
+                <circle cx="50" cy="37" r="10"/>
+                <path transform="scale(2)" d="M25,30c0,0,0,0-0.1,0v0.1l-3.8,22.365l-4.9,15.705l0,0l-3.3,7.058v0.1v0.099c0.1,0,0.1,0,0.1,0l3.9-1.889 l2.1-2.386l2.2-3.379l3.5,12.922l-0.1,0.497l0,0l0.1,0.1c0,0,0,0,0.1,0h0.2h0.1c0-0.1,0-0.1,0.1-0.1v-0.099l-0.2-0.398l3.7-12.922 l2.1,3.379l2.1,2.386h0.1l3.7,1.889l0,0c0.1-0.099,0.1-0.099,0.2-0.099v-0.1l-3.3-7.058l0,0l-4.9-15.705l-3.5-22.365l-0.1-0.1 H256.2z"/>
+            </g>
+
+        <mask id="Mask">
+            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#Shield1" fill="white"/>
+        </mask>
+    </defs>
+  <g mask="url(#Mask)">
+    <use id="Background" xlink:href="#Shield1" fill="#ffffff"/>
+    <g id="PatternGroup">
+      <use xlink:href="#vair" transform="translate(0,0)"/>
+      <use xlink:href="#vair" transform="translate(120,0)"/>
+      <use xlink:href="#vair" transform="translate(240,0)"/>
+      <use xlink:href="#vair" transform="translate(360,0)"/>
+      <use xlink:href="#vair" transform="translate(480,0)"/>
+      <use xlink:href="#vair" transform="translate(600,0)"/>
+      <use xlink:href="#vair" transform="translate(-60,120)"/>
+      <use xlink:href="#vair" transform="translate(60,120)"/>
+      <use xlink:href="#vair" transform="translate(180,120)"/>
+      <use xlink:href="#vair" transform="translate(300,120)"/>
+      <use xlink:href="#vair" transform="translate(420,120)"/>
+      <use xlink:href="#vair" transform="translate(540,120)"/>
+      <use xlink:href="#vair" transform="translate(660,120)"/>
+      <use xlink:href="#vair" transform="translate(0,240)"/>
+      <use xlink:href="#vair" transform="translate(120,240)"/>
+      <use xlink:href="#vair" transform="translate(240,240)"/>
+      <use xlink:href="#vair" transform="translate(360,240)"/>
+      <use xlink:href="#vair" transform="translate(480,240)"/>
+      <use xlink:href="#vair" transform="translate(600,240)"/>
+      <use xlink:href="#vair" transform="translate(-60,360)"/>
+      <use xlink:href="#vair" transform="translate(60,360)"/>
+      <use xlink:href="#vair" transform="translate(180,360)"/>
+      <use xlink:href="#vair" transform="translate(300,360)"/>
+      <use xlink:href="#vair" transform="translate(420,360)"/>
+      <use xlink:href="#vair" transform="translate(540,360)"/>
+      <use xlink:href="#vair" transform="translate(660,360)"/>
+      <use xlink:href="#vair" transform="translate(0,480)"/>
+      <use xlink:href="#vair" transform="translate(120,480)"/>
+      <use xlink:href="#vair" transform="translate(240,480)"/>
+      <use xlink:href="#vair" transform="translate(360,480)"/>
+      <use xlink:href="#vair" transform="translate(480,480)"/>
+      <use xlink:href="#vair" transform="translate(600,480)"/>
+      <use xlink:href="#vair" transform="translate(-60,600)"/>
+      <use xlink:href="#vair" transform="translate(60,600)"/>
+      <use xlink:href="#vair" transform="translate(180,600)"/>
+      <use xlink:href="#vair" transform="translate(300,600)"/>
+      <use xlink:href="#vair" transform="translate(420,600)"/>
+      <use xlink:href="#vair" transform="translate(540,600)"/>
+      <use xlink:href="#vair" transform="translate(660,600)"/>
+    </g>
+    <use mask="url(#bend)" fill="#ffffff" xlink:href="#Shield1"/>
+    <g id="PatternGroup" mask="url(#bend)">
+      <use xlink:href="#ermine" transform="translate(0,0)"/>
+      <use xlink:href="#ermine" transform="translate(120,0)"/>
+      <use xlink:href="#ermine" transform="translate(240,0)"/>
+      <use xlink:href="#ermine" transform="translate(360,0)"/>
+      <use xlink:href="#ermine" transform="translate(480,0)"/>
+      <use xlink:href="#ermine" transform="translate(600,0)"/>
+      <use xlink:href="#ermine" transform="translate(-60,120)"/>
+      <use xlink:href="#ermine" transform="translate(60,120)"/>
+      <use xlink:href="#ermine" transform="translate(180,120)"/>
+      <use xlink:href="#ermine" transform="translate(300,120)"/>
+      <use xlink:href="#ermine" transform="translate(420,120)"/>
+      <use xlink:href="#ermine" transform="translate(540,120)"/>
+      <use xlink:href="#ermine" transform="translate(660,120)"/>
+      <use xlink:href="#ermine" transform="translate(0,240)"/>
+      <use xlink:href="#ermine" transform="translate(120,240)"/>
+      <use xlink:href="#ermine" transform="translate(240,240)"/>
+      <use xlink:href="#ermine" transform="translate(360,240)"/>
+      <use xlink:href="#ermine" transform="translate(480,240)"/>
+      <use xlink:href="#ermine" transform="translate(600,240)"/>
+      <use xlink:href="#ermine" transform="translate(-60,360)"/>
+      <use xlink:href="#ermine" transform="translate(60,360)"/>
+      <use xlink:href="#ermine" transform="translate(180,360)"/>
+      <use xlink:href="#ermine" transform="translate(300,360)"/>
+      <use xlink:href="#ermine" transform="translate(420,360)"/>
+      <use xlink:href="#ermine" transform="translate(540,360)"/>
+      <use xlink:href="#ermine" transform="translate(660,360)"/>
+      <use xlink:href="#ermine" transform="translate(0,480)"/>
+      <use xlink:href="#ermine" transform="translate(120,480)"/>
+      <use xlink:href="#ermine" transform="translate(240,480)"/>
+      <use xlink:href="#ermine" transform="translate(360,480)"/>
+      <use xlink:href="#ermine" transform="translate(480,480)"/>
+      <use xlink:href="#ermine" transform="translate(600,480)"/>
+      <use xlink:href="#ermine" transform="translate(-60,600)"/>
+      <use xlink:href="#ermine" transform="translate(60,600)"/>
+      <use xlink:href="#ermine" transform="translate(180,600)"/>
+      <use xlink:href="#ermine" transform="translate(300,600)"/>
+      <use xlink:href="#ermine" transform="translate(420,600)"/>
+      <use xlink:href="#ermine" transform="translate(540,600)"/>
+      <use xlink:href="#ermine" transform="translate(660,600)"/>
+    </g>
+  </g>
+</svg>
