@@ -14,6 +14,7 @@ use Exception;
 
 class CodeGenerator
 {
+    const COMPILERSTEP = "Generator";
     private IR $shield;
     private DOMDocument $document;
 
@@ -47,7 +48,7 @@ class CodeGenerator
             $this->generateField($this->shield->getFirst(Tokens::FIELD));
         } else {
             // No field definition, generate gray field
-            $this->shield->addMessage("Could not generate field, generating gray shield");
+            $this->shield->addMessage(self::COMPILERSTEP,"Could not generate field, generating gray shield");
             $color = GeneratorDefinitions::getColor('error');
             $this->setShieldColor($color);
         }
@@ -96,7 +97,7 @@ class CodeGenerator
             case Tokens::TINCTURE:
                 $color = GeneratorDefinitions::getColor($colorNode->getText());
                 if (!$color) {
-                    $this->shield->addMessage("Unknown color {$colorNode->getText()}");
+                    $this->shield->addMessage(self::COMPILERSTEP,"Unknown color {$colorNode->getText()}");
                 }
                 $this->setShieldColor($color);
                 break;
@@ -108,7 +109,7 @@ class CodeGenerator
                 $this->addFurPattern($colorNode->getText());
                 break;
             default:
-                $this->shield->addMessage("Could not generate field, generating gray shield");
+                $this->shield->addMessage(self::COMPILERSTEP,"Could not generate field, generating gray shield");
                 $color = GeneratorDefinitions::getColor('error');
                 $this->setShieldColor($color);
         }
@@ -136,7 +137,7 @@ class CodeGenerator
         // Add definition fur shape
         $fur = GeneratorDefinitions::getFurDefinition($furName);
         if (!$fur) {
-            $this->shield->addMessage("Unknown fur:".$furName);
+            $this->shield->addMessage(self::COMPILERSTEP,"Unknown fur:".$furName);
             return;
         }
         $this->addXML($defs, $fur);
@@ -206,7 +207,7 @@ class CodeGenerator
         if (!$this->checkMaskExists($partition)) {
             $points = GeneratorDefinitions::getPartitionMaskPoints($partition);
             if (!$points) {
-                $this->shield->addMessage("Can't generate partition: ".$partition);
+                $this->shield->addMessage(self::COMPILERSTEP,"Can't generate partition: ".$partition);
                 return;
 //                throw new Exception("Can't generate Partition");
             }
@@ -218,7 +219,7 @@ class CodeGenerator
                 if (GeneratorDefinitions::canBeSinister($partition)) {
                     $poly->setAttribute("transform", GeneratorDefinitions::SINISTERTRANSFORM);
                 } else {
-                    $this->shield->addMessage("Cannot apply sinister to ".$partition);
+                    $this->shield->addMessage(self::COMPILERSTEP,"Cannot apply sinister to ".$partition);
                 }
             }
             $mask = $this->document->createElement("mask");
@@ -234,7 +235,7 @@ class CodeGenerator
             case Tokens::TINCTURE:
                 $color = GeneratorDefinitions::getColor($colorNode->getText());
                 if (!$color) {
-                    $this->shield->addMessage("Unknown color {$colorNode->getText()}");
+                    $this->shield->addMessage(self::COMPILERSTEP,"Unknown color {$colorNode->getText()}");
                 }
                 $this->addColorUseStatement($partition, $color);
                 break;
@@ -247,7 +248,7 @@ class CodeGenerator
                 $this->addFurPattern($colorNode->getText(), $partition);
                 break;
             default:
-                $this->shield->addMessage(
+                $this->shield->addMessage(self::COMPILERSTEP,
                     "Could not generate color {$colorNode->getText()} of type {$type}, generating it as gray"
                 );
                 $color = GeneratorDefinitions::getColor('error');
@@ -274,13 +275,13 @@ class CodeGenerator
 
         $color = GeneratorDefinitions::getColor($colorName);
         if (!$color) {
-            $this->shield->addMessage("Can't use color {$colorName} here");
+            $this->shield->addMessage(self::COMPILERSTEP,"Can't use color {$colorName} here");
             $color = GeneratorDefinitions::getColor('error');
         }
 
         $points = GeneratorDefinitions::getOrdinaryPoints($shape);
         if (!$points ) {
-            $this->shield->addMessage("Can't generate ordinary {$ordinary->getText()}");
+            $this->shield->addMessage(self::COMPILERSTEP,"Can't generate ordinary {$ordinary->getText()}");
             return;
         }
 
@@ -298,7 +299,7 @@ class CodeGenerator
             if (GeneratorDefinitions::canBeSinister($shape)) {
                 $poly->setAttribute("transform", GeneratorDefinitions::SINISTERTRANSFORM);
             } else {
-                $this->shield->addMessage("Cannot apply sinister to ".$shape);
+                $this->shield->addMessage(self::COMPILERSTEP,"Cannot apply sinister to ".$shape);
             }
         }
 

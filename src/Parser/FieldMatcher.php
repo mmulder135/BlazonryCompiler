@@ -8,6 +8,7 @@ use BlazonCompiler\Compiler\Language\Tokens;
 
 class FieldMatcher
 {
+    const COMPILERSTEP = "FieldParser";
 
     /**
      * Which tokens are needed after the key token is found
@@ -45,14 +46,14 @@ class FieldMatcher
         while (!empty($queue)) {
             if ($offset > $lastIndex) {
                 // we did not fill all requirements, no field found
-                $ir->addMessage("Could not find a field declaration, missing tokens: ".implode(', ', $queue));
+                $ir->addMessage(self::COMPILERSTEP,"Could not find a field declaration, missing tokens: ".implode(', ', $queue));
                 return false;
             }
             $node = $ir->getChildren()[$offset];
             $token = $node->getToken();
 
             if (!in_array($token,self::CAN_CONTAIN)) {
-                $ir->addMessage("Trying to parse field, found {$token} instead");
+                $ir->addMessage(self::COMPILERSTEP,"Trying to parse field, found {$token} instead");
                 return false;
             }
             $word ? $word .= ' '.$token : $word = $token;

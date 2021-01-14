@@ -101,10 +101,11 @@ class IR extends NonTerm
     }
 
     /**
+     * @param string $compiler_step
      * @param string $message
      */
-    public function addMessage(string $message): void
+    public function addMessage(string $compiler_step, string $message): void
     {
-        $this->messages[] = $message;
+        $this->messages[] = $compiler_step . ': ' . $message;
     }
 }
