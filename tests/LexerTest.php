@@ -24,7 +24,7 @@ class LexerTest extends TestCase
         $ir = $tokenizer->tokenize($blazon);
         $result = array_values(array_map(function ($node) {
             return $node->getToken();
-        }, $ir->getNodes()));
+        }, $ir->getChildren()));
         $this->assertEqualS($expectedTokens, $result, "Failed on '{$blazon}'");
     }
 

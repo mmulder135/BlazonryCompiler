@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace BlazonCompiler\Compiler\Tests;
 
+use BlazonCompiler\Compiler\AST\IR;
 use BlazonCompiler\Compiler\AST\Node;
 use BlazonCompiler\Compiler\AST\NonTerm;
 use BlazonCompiler\Compiler\AST\Term;
@@ -21,13 +22,10 @@ class ParseFieldTest extends TestCase
      */
     public function checkResultColor(string $blazon, Term $term): void
     {
-        $expected = new NonTerm(
-            Tokens::FIELD,
-            [new NonTerm(Tokens::COLOR, [$term])]
-        );
+        $expected = new IR([new NonTerm(Tokens::FIELD,[new NonTerm(Tokens::COLOR, [$term])])]);
         $parser = new Parser();
-        $ir = $parser->parse($blazon);
-        $this->assertEquals($expected, $ir->getNodes()[0]);
+        $root = $parser->parse($blazon);
+        $this->assertEquals($expected, $root);
     }
 
     /**
@@ -38,9 +36,10 @@ class ParseFieldTest extends TestCase
      */
     public function checkResultPartition(string $blazon, NonTerm $field): void
     {
+        $expected = new IR([$field]);
         $parser = new Parser();
-        $ir = $parser->parse($blazon);
-        self::assertEquals([$field], $ir->getNodes());
+        $root = $parser->parse($blazon);
+        self::assertEquals($expected, $root);
     }
 
     /**
@@ -48,13 +47,13 @@ class ParseFieldTest extends TestCase
      * @dataProvider wrongBlazons
      * @dataProvider longerBlazons
      * @param string $blazon
-     * @param Node[] $expected
+     * @param array $nodes
      */
-    public function checkArray(string $blazon, array $expected): void
+    public function checkArray(string $blazon, array $nodes): void
     {
         $parser = new Parser();
-        $ir = $parser->parse($blazon);
-        self::assertEquals($expected, array_values($ir->getNodes()));
+        $root = $parser->parse($blazon);
+        self::assertEquals($nodes, array_values($root->getChildren()));
     }
 
     /**
@@ -198,7 +197,7 @@ class ParseFieldTest extends TestCase
     public function longerBlazons(): array
     {
         return [
-            ["per bend azure and gules, a bend purpure",[
+            ["per bend azure and gules, a bend",[
                 new NonTerm(Tokens::FIELD, [
                     new NonTerm(Tokens::PARTITION, [
                         new Term(Tokens::PER, 'per'),
@@ -210,7 +209,6 @@ class ParseFieldTest extends TestCase
                 new Term(Tokens::COMMA, ','),
                 new Term(Tokens::ONE, 'a'),
                 new Term(Tokens::ORDINARY, 'bend'),
-                new NonTerm(Tokens::COLOR, [new Term(Tokens::TINCTURE, 'purpure')]),
             ]],
             ["per bend azure and gules, purpure",[
                 new NonTerm(Tokens::FIELD, [
@@ -224,7 +222,7 @@ class ParseFieldTest extends TestCase
                 new Term(Tokens::COMMA, ','),
                 new NonTerm(Tokens::COLOR, [new Term(Tokens::TINCTURE, 'purpure')]),
             ]],
-            ["Azure, a bend or", [
+            ["Azure, a or", [
                 new NonTerm(Tokens::FIELD, [
                     new NonTerm(Tokens::COLOR, [
                         new Term(Tokens::TINCTURE, 'azure')
@@ -232,7 +230,6 @@ class ParseFieldTest extends TestCase
                 ]),
                 new Term(Tokens::COMMA, ','),
                 new Term(Tokens::ONE, 'a'),
-                new Term(Tokens::ORDINARY, 'bend'),
                 new NonTerm(Tokens::COLOR, [new Term(Tokens::METAL, 'or')]),
             ]]
         ];

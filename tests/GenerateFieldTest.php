@@ -3,9 +3,7 @@ declare(strict_types=1);
 
 namespace BlazonCompiler\Compiler\Tests;
 
-use BlazonCompiler\Compiler\AST\NonTerm;
 use BlazonCompiler\Compiler\Generator\CodeGenerator;
-use BlazonCompiler\Compiler\Language\Tokens;
 use BlazonCompiler\Compiler\Parser\Parser;
 use DOMDocument;
 use PHPUnit\Framework\TestCase;
@@ -47,13 +45,14 @@ class GenerateFieldTest extends TestCase
      * @dataProvider noField
      * @param string $blazon
      * @param string $fileName
+     * @param bool $errors
      */
-    public function test(string $blazon, string $fileName): void
+    public function test(string $blazon, string $fileName, bool $errors = false): void
     {
         $g = new CodeGenerator();
         $parser = new Parser();
-        $ir = $parser->parse($blazon);
-        $xml = $g->generate(new NonTerm(Tokens::SHIELD, $ir->getNodes()))->saveXML();
+        $root = $parser->parse($blazon);
+        $xml = $g->generate($root)->saveXML();
         $result = new DOMDocument();
         $result->preserveWhiteSpace = false;
         $result->formatOutput = false;
@@ -66,6 +65,7 @@ class GenerateFieldTest extends TestCase
         $expected->load($path);
 
         self::assertEquals($expected, $result);
+        self::assertEquals($errors,count($root->getMessages()) > 0);
     }
 
     public function singleColor(): array
@@ -93,7 +93,7 @@ class GenerateFieldTest extends TestCase
     {
         return [
             ['per bend sinister argent and or','per_bend_sinister_argent_or'],
-            ['per pale sinister argent and or', 'per_pale_argent_or'],
+            ['per pale sinister argent and or', 'per_pale_argent_or',true],
             ['per bend sinister ermine and vair','per_bend_sinister_ermine_vair'],
         ];
     }
@@ -101,8 +101,8 @@ class GenerateFieldTest extends TestCase
     public function noField(): array
     {
         return [
-            ['per bend argent', 'error_shield'],
-            ['bend','error_shield'],
+            ['per bend argent', 'error_shield',true],
+            ['bend','error_shield',true],
         ];
     }
 }

@@ -7,6 +7,6 @@
     </defs>
   <g>
     <use id="Background" xlink:href="#Shield1" fill="#0036b6"/>
-    <polygon mask="url(#Mask)" points="0,0 150,0 600,510 600,660 450,660 0,150" fill="#e3d800" transform="scale(-1,1) translate(-600,0)"/>
+    <polygon mask="url(#Mask)" points="0,0 150,0 600,510 600,660 450,660 0,150" fill="#808080"/>
   </g>
 </svg>

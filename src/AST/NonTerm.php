@@ -24,6 +24,10 @@ class NonTerm extends Node
         }
     }
 
+    /**
+     * @param string $token
+     * @return bool
+     */
     public function hasChildToken(string $token): bool
     {
         foreach ($this->children as $node) {
@@ -34,10 +38,14 @@ class NonTerm extends Node
         return false;
     }
 
+    /**
+     * @param string $token
+     * @return Node[]
+     */
     public function getChildrenByToken(string $token): array
     {
         $result = [];
-        foreach ($this->children as $node){
+        foreach ($this->children as $node) {
             if ($node->getToken() == $token) {
                 $result[] = $node;
             }
@@ -45,9 +53,13 @@ class NonTerm extends Node
         return $result;
     }
 
+    /**
+     * @param string $token
+     * @return Node|null
+     */
     public function getFirst(string $token): ?Node
     {
-        foreach ($this->children as $node){
+        foreach ($this->children as $node) {
             if ($node->getToken() == $token) {
                 return $node;
             }

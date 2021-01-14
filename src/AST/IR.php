@@ -3,19 +3,22 @@ declare(strict_types=1);
 
 namespace BlazonCompiler\Compiler\AST;
 
-class IR
+use BlazonCompiler\Compiler\Language\Tokens;
+
+class IR extends NonTerm
 {
-    /** @var array<int, Node> */
-    private array $nodes;
+    /** @var array<string>  */
+    private array $messages;
 
     /**
      * IR constructor.
-     * @param array<int,Term> $nodes
+     * @param array<int,Node> $nodes
      */
     public function __construct(array $nodes)
     {
-        $this->nodes = $nodes;
+        parent::__construct(Tokens::SHIELD, $nodes);
         $this->fixOffsets();
+        $this->messages = [];
     }
 
     /**
@@ -31,11 +34,11 @@ class IR
         $end = $offset + strlen($word);
         $children = [];
         // get all matched tokens
-        foreach ($this->nodes as $index => $node) {
+        foreach ($this->children as $index => $node) {
             if ($offset <= $index) {
                 if ($index <= $end) {
-                    unset($this->nodes[$index]);
-                    if (!in_array($node->getToken(),$ignoreTokens)){
+                    unset($this->children[$index]);
+                    if (!in_array($node->getToken(), $ignoreTokens)) {
                         $children[] = $node;
                     }
                 } else {
@@ -44,35 +47,8 @@ class IR
                 }
             } //else go to next
         }
-        $this->nodes[$offset] = new NonTerm($token, $children);
-        ksort($this->nodes);
-    }
-
-//    /**
-//     * Matches the array nodes<offset,Node> to token. Also fixes offsets
-//     * @param string $token
-//     * @param array<int> $offsets
-//     */
-//    public function addMatchNodes(string $token, int $lowestOffset, int $highestOffset)
-//    {
-//        $nodes = [];
-//        $offset = $lowestOffset;
-//        while ($offset <=- $highestOffset){
-//            $nodes[] = $node = $this->nodes[$offset];
-//            unset($node);
-//        }
-//        $this->nodes[$lowestOffset] = new NonTerm($token, $nodes);
-//        ksort($this->nodes);
-//        $this->fixOffsets();
-//    }
-
-    /**
-     * Removes a node from the IR. DESTRUCTIVE
-     * @param int $offset
-     */
-    public function removeNode(int $offset): void
-    {
-        unset($this->nodes[$offset]);
+        $this->children[$offset] = new NonTerm($token, $children);
+        ksort($this->children);
     }
 
     /**
@@ -83,12 +59,22 @@ class IR
     {
         $offset = 0;
         $new = [];
-        foreach ($this->nodes as $node) {
+        foreach ($this->children as $node) {
             $new[$offset] = $node;
             // each token is followed by a space
             $offset += strlen($node->getToken()) + 1;
         }
-        $this->nodes = $new;
+        $this->children = $new;
+
+        //fix text, get rid of text from deleted nodes
+        $this->text = '';
+        foreach ($this->children as $child) {
+            if ($this->text == '') {
+                $this->text = $child->getText();
+            } else {
+                $this->text .= ' '.$child->getText();
+            }
+        }
     }
 
     /**
@@ -102,15 +88,23 @@ class IR
                 array_map(function ($node) {
                     return $node->getToken();
                 },
-                $this->nodes)
+                $this->children)
             );
     }
 
     /**
-     * @return array<int,Node>
+     * @return string[]
      */
-    public function getNodes(): array
+    public function getMessages(): array
     {
-        return $this->nodes;
+        return $this->messages;
+    }
+
+    /**
+     * @param string $message
+     */
+    public function addMessage(string $message): void
+    {
+        $this->messages[] = $message;
     }
 }

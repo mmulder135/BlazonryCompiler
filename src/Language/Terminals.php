@@ -21,7 +21,7 @@ class Terminals extends Dictionary
                 'engrailed', 'invected', 'embattled', 'indented', 'dancetty', 'wavy', 'nebuly'
             ],
             Tokens::ORDINARY => [
-                'fess', 'bend', 'pale', 'chevron', 'cross', 'bar'
+                'fess', 'bend', 'pale', 'chevron', 'cross', 'bar', 'chief'
             ],
             Tokens::DIVISION => [
                 'quarterly'

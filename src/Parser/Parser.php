@@ -5,12 +5,13 @@ namespace BlazonCompiler\Compiler\Parser;
 
 use BlazonCompiler\Compiler\AST\IR;
 use BlazonCompiler\Compiler\Language\Dictionary;
+use BlazonCompiler\Compiler\Language\Ordinaries;
 use BlazonCompiler\Compiler\Language\ShortMatches;
 
 class Parser
 {
 
-    public function parse(string $blazon): IR
+    public static function parse(string $blazon): IR
     {
         // Completely parse the blazon
 
@@ -19,12 +20,13 @@ class Parser
         $ir = $tokenizer->tokenize($blazon);
 
         // level 2: short matches
-        while ($this->match($ir, new ShortMatches()));
-
+        self::match($ir, new ShortMatches());
 
         // level 3 : find and parse field declaration
         // Blazon should start with field declaration
-        $fieldFound = FieldMatcher::parseField($ir);
+        FieldMatcher::parseField($ir);
+
+        self::match($ir, new Ordinaries());
 
         return $ir;
     }
@@ -35,7 +37,7 @@ class Parser
      * @param Dictionary $dictionary
      * @return bool
      */
-    public function match(IR $ir, Dictionary $dictionary): bool
+    public static function match(IR $ir, Dictionary $dictionary): bool
     {
         $string = $ir->getString();
         $offset = 0;

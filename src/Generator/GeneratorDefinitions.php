@@ -6,7 +6,7 @@ namespace BlazonCompiler\Compiler\Generator;
 class GeneratorDefinitions
 {
     const BASESHIELD = '
-        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="600" height="660" id="Shield" style="background-color:#d3d3d3">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="600" height="660" id="Shield">
             <defs id="Herald">
                 <path d="M3,3 V260.637C3,369.135,46.339,452.459,99.763,514 C186.238,614.13,300,657,300,657 C300,657,413.762,614.13,500.237,514 C553.661,452.459,597,369.135,597,260.637V3Z" id="Shield1"/>
             </defs>
@@ -62,12 +62,12 @@ class GeneratorDefinitions
         "bend"
     ];
 
-    public static function getColor(string $color): string
+    public static function getColor(string $color): ?string
     {
         if (array_key_exists($color, self::COLORS)) {
             return self::COLORS[$color];
         }
-        return self::COLORS['error'];
+        return null;
     }
 
     public static function getFurDefinition(string $fur): ?string

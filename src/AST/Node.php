@@ -9,7 +9,7 @@ abstract class Node
     protected string $token;
     /** @var string  */
     protected string $text;
-    /** @var array<Node>  */
+    /** @var Node[]  */
     protected array $children;
 
     /**
@@ -36,7 +36,15 @@ abstract class Node
         return $this->children;
     }
 
+    /**
+     * @param string $token
+     * @return bool
+     */
     abstract public function hasChildToken(string $token): bool;
 
+    /**
+     * @param string $token
+     * @return Node[]
+     */
     abstract public function getChildrenByToken(string $token): array;
 }
