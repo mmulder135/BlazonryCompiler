@@ -32,8 +32,9 @@ if (isset($_GET['blazon'])) {
         We also support the furs Ermine and Vair.
     </p>
     <p>
-        We support the generation of single color fields and field devided per bend or per pale.
-        Devisions can also be sinister.
+        We support the generation of single color fields and fields divided per bend or per pale.
+        We also support the ordinaries bend and pale.
+        Divisions and ordinaries can also be sinister.
     </p>
 </div>
 <div>
