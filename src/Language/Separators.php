@@ -5,14 +5,14 @@ namespace BlazonCompiler\Compiler\Language;
 
 class Separators extends Dictionary
 {
+    /**
+     * Separators constructor.
+     */
     public function __construct()
     {
         $this->dictionary = [
-//            Tokens::WS => [
-//                '\s+'
-//            ],
             Tokens::COMMA => [
-                ','
+                ',',';'
             ]
         ];
         parent::__construct();

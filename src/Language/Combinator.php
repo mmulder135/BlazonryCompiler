@@ -29,7 +29,6 @@ class Combinator extends Dictionary
         foreach ($newTokens as $token) {
             $this->tokensArray[] = $token;
         }
-//        array_push($this->tokensArray, $dictionary->getTokens());
     }
 
     protected function createRegex(): void

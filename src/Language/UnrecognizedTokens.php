@@ -6,6 +6,9 @@ namespace BlazonCompiler\Compiler\Language;
 class UnrecognizedTokens extends Dictionary
 {
 
+    /**
+     * UnrecognizedTokens constructor.
+     */
     public function __construct()
     {
         $this->dictionary = [

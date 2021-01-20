@@ -4,6 +4,15 @@ This package is (the start of) a semi-structured compiler for blazonry, it compi
 
 ## Structure
 
+This compiler contains a tokenizer, parser, checker, and code generator.
+
+All steps of the compiler are combined in Compiler. For trying the compiler from the command line test.php can be called.
+
+The folder AST contains all files related to the intermediate representation. 
+Checker contains the static checker that checks if the blazon follows the heraldry rules for colors.
+Generator contains everything of the codegenerator, which generates a SVG given an intermediate representation.
+Language contains all token definition and the language definitions of the lexical steps of parsing (everything except field parsing).
+Parser contains the parser, tokenizer, and a specialized parser for the field.
 
 
 ## Install
@@ -21,29 +30,9 @@ $ composer require BlazonCompiler/Compiler
 $ composer test
 ```
 
-## TODO
-### Tokenizer
-- [x] Recognize basic tokens
-- [x] Handle comma's and spaces properly
-- [x] Handle strings (unrecognized text)
-
-### Parser
-- [x] Parse single color shield
-- [ ] Parse field
-- [ ] Parse ordinaries (to be extended)
-- [ ] Parse charges (to be extended)
-
-### Code generator
-- [x] Create SVG of shield with single color
-- [ ] Generate fields
-- [ ] Generate ordinaries (to be extended)
-- [ ] Generate charges (to be extended)
-- [ ] Generate charges on ordinaries (to be extended)
-
 ## Specifications
 
-### Field
-Level 1: simple matches - tokenizer
+### Level 1: Tokenizer
 ```
 Metal = 'Or' | 'Argent'
 Tincture = 'Azure' | 'Vert' | 'Gules' | 'Sable' | 'Purpure'
@@ -55,13 +44,13 @@ Sinister = 'sinister'
 Parted = 'party'
 PartitionLine = 'engrailed', 'invected', 'embattled', 'indented', 'dancetty', 'wavy', 'nebuly'
 ```
-Level 2: short matches - simple short matches, generalizations
+### Level 2: short matches - simple short matches, generalizations
 ```
 Color = Metal | Tincture | Fur
 Partition   =   Division 
             |   Per Ordinary 
 ```
-Level 3: field - Flexible parsing that attempts to find a field declaration \
+### Level 3: Field - Flexible parsing that attempts to find a field declaration
 This step does not rely on simple regexes, below is for understanding
 ```
 Field =     Color 
@@ -73,9 +62,13 @@ Rules:
 | ------        | ------------------|
 | Parted        | Partition         |
 | Partition     | Color, Color      |
-Anything that is between the first token and the point that all the needed tokens are found will become part of field.
+
 Tokens that do not add meaning will be removed from the parse tree, these are: Comma, And, Parted.
-#### Examples:
+### Level 4 : Ordinaries
+```
+FULL_ORDINARY = ONE? ORDINARY SINISTER? COLOR
+```
+## Examples:
 Single color:
 ```
 Or

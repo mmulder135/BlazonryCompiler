@@ -5,6 +5,9 @@ namespace BlazonCompiler\Compiler\Language;
 
 class Ordinaries extends Dictionary
 {
+    /**
+     * Ordinaries constructor.
+     */
     public function __construct()
     {
         $this->dictionary = [

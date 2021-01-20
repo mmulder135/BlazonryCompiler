@@ -10,33 +10,6 @@ use PHPUnit\Framework\TestCase;
 
 class GenerateFieldTest extends TestCase
 {
-//    /**
-//     * @test
-//     * @dataProvider toGenerate
-//     */
-//    public function generateFiles(string $blazon, string $filename): void
-//    {
-//        $g = new CodeGenerator();
-//        $parser = new Parser();
-//        $ir = $parser->parse($blazon);
-//        $f = $g->generateWithEdge(new NonTerm(Tokens::SHIELD, $ir->getNodes()));
-//        file_put_contents("generated/".$filename, $f->saveXML());
-//    }
-
-    public function toGenerate(): array
-    {
-        return [
-//            ["azure","azure.svg"],
-//            ["vair","vair.svg"],
-//            ["ermine","ermine.svg"],
-//            ["per bend vair and or","per_bend_vair_or.svg"],
-//            ["per bend or and vair","per_bend_or_vair.svg"],
-//            ["per pale vair and or","per_pale_vair_or.svg"],
-            ["per bend sinister vair and or","per_bend_sinister_vair_or.svg"],
-            ["per bend sinister or and vair","per_bend_sinister_or_vair.svg"]
-        ];
-    }
-
     /**
      * @test
      * @dataProvider singleColor

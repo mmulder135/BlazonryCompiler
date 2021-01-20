@@ -5,6 +5,9 @@ namespace BlazonCompiler\Compiler\Language;
 
 class Terminals extends Dictionary
 {
+    /**
+     * Terminals constructor.
+     */
     public function __construct()
     {
         $this->dictionary = [

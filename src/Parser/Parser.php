@@ -11,10 +11,13 @@ use BlazonCompiler\Compiler\Language\ShortMatches;
 class Parser
 {
 
+    /**
+     * Parse the given blazon
+     * @param string $blazon
+     * @return IR
+     */
     public static function parse(string $blazon): IR
     {
-        // Completely parse the blazon
-
         // level 1: tokenizer
         $tokenizer = new Tokenizer();
         $ir = $tokenizer->tokenize($blazon);
@@ -26,6 +29,7 @@ class Parser
         // Blazon should start with field declaration
         FieldMatcher::parseField($ir);
 
+        // level 4 : find and parse ordinaries
         self::match($ir, new Ordinaries());
 
         return $ir;

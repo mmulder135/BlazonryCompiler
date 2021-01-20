@@ -20,7 +20,6 @@ final class Tokens
     const AND = 'AND';
 
     // Separators
-    const WS = 'WS';
     const COMMA = 'COMMA';
 
     //Unrecognized tokens

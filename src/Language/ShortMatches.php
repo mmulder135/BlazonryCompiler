@@ -5,6 +5,9 @@ namespace BlazonCompiler\Compiler\Language;
 
 class ShortMatches extends Dictionary
 {
+    /**
+     * ShortMatches constructor.
+     */
     public function __construct()
     {
         $this->dictionary = [
@@ -17,13 +20,6 @@ class ShortMatches extends Dictionary
                 [Tokens::DIVISION],
                 [Tokens::PER, Tokens::ORDINARY],
             ],
-//            Tokens::PARTITION => [
-//                [Tokens::DIVISION, Tokens::PARTITION_LINE, Tokens::SINISTER],
-//                [Tokens::DIVISION, Tokens::SINISTER, Tokens::PARTITION_LINE],
-//                [Tokens::DIVISION, Tokens::PARTITION_LINE],
-//                [Tokens::DIVISION, Tokens::SINISTER],
-//                [Tokens::DIVISION],
-//            ],
         ];
         parent::__construct();
     }
@@ -34,8 +30,6 @@ class ShortMatches extends Dictionary
     {
         $tokenMap = [];
         foreach ($this->dictionary as $name => $values) {
-            // values = [[metal],[tincture]]
-            // entry = [metal] | entry = [per, ordinary]
             $options = [];
             foreach ($values as $entry) {
                 $options[] = implode(' ', $entry);

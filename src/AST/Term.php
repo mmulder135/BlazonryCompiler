@@ -5,6 +5,11 @@ namespace BlazonCompiler\Compiler\AST;
 
 class Term extends Node
 {
+    /**
+     * Term constructor.
+     * @param string $token
+     * @param string $word
+     */
     public function __construct(string $token, string $word)
     {
         $this->token = $token;
@@ -12,11 +17,19 @@ class Term extends Node
         $this->children = [];
     }
 
+    /**
+     * @param string $token
+     * @return false
+     */
     public function hasChildToken(string $token): bool
     {
         return false;
     }
 
+    /**
+     * @param string $token
+     * @return array []
+     */
     public function getChildrenByToken(string $token): array
     {
         return [];

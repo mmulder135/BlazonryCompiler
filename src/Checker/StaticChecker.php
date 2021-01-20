@@ -10,6 +10,10 @@ class StaticChecker
 {
     const COMPILERSTEP = "Heraldry Checker";
 
+    /**
+     * Check the intermediate representation for color-mistakes
+     * @param IR $root
+     */
     public static function checkIR(IR $root):void
     {
         // Check if no metal on metal or tincture on tincture

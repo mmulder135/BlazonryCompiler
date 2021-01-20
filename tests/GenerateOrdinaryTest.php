@@ -22,7 +22,6 @@ class GenerateOrdinaryTest extends TestCase
     {
         $g = new CodeGenerator();
         $xml = $g->generate($root)->saveXML();
-//        file_put_contents("test.svg", $xml);
 
         $result = new DOMDocument();
         $result->preserveWhiteSpace = false;

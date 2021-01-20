@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace BlazonCompiler\Compiler\Tests;
 
 use BlazonCompiler\Compiler\AST\IR;
-use BlazonCompiler\Compiler\AST\Node;
 use BlazonCompiler\Compiler\AST\NonTerm;
 use BlazonCompiler\Compiler\AST\Term;
 use BlazonCompiler\Compiler\Language\Tokens;
@@ -56,9 +55,6 @@ class ParseFieldTest extends TestCase
         self::assertEquals($nodes, array_values($root->getChildren()));
     }
 
-    /**
-     * @return array<array<string,Term>>
-     */
     public function oneColor(): array
     {
         return [
@@ -69,9 +65,6 @@ class ParseFieldTest extends TestCase
         ];
     }
 
-    /**
-     * @return array<array<string,NonTerm>>
-     */
     public function partitions(): array
     {
         return [
@@ -173,10 +166,6 @@ class ParseFieldTest extends TestCase
         ];
     }
 
-
-    /**
-     * @return array<array<string|Node[]>>
-     */
     public function wrongBlazons(): array
     {
         return [

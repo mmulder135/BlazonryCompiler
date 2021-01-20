@@ -10,7 +10,7 @@ use BlazonCompiler\Compiler\Parser\Parser;
 class Compiler
 {
     /**
-     * Compiles blazon to an svg string
+     * Compiles blazon to an svg string, returns [xml, errors].
      * @param string $blazon
      * @return string[]
      */

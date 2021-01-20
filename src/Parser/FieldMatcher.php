@@ -19,6 +19,10 @@ class FieldMatcher
         Tokens::PARTED => [Tokens::PARTITION] // Parted indicates a partition
     ];
 
+    /**
+     * Which tokens can be in a field declaration
+     * @var string[]
+     */
     private const CAN_CONTAIN = [
         Tokens::PARTED,
         Tokens::PARTITION,
@@ -30,13 +34,18 @@ class FieldMatcher
     ];
 
     /**
-     * Tokens that are not needed in the result
+     * Tokens that are not needed in the resulting IR
      * @var string[]
      */
     private const IGNORE = [
         Tokens::COMMA, Tokens::AND, Tokens::PARTED
     ];
 
+    /**
+     * Attempt to parse a field declaration
+     * @param IR $ir
+     * @return bool
+     */
     public static function parseField(IR $ir): bool
     {
         $offset = 0;
@@ -46,14 +55,17 @@ class FieldMatcher
         while (!empty($queue)) {
             if ($offset > $lastIndex) {
                 // we did not fill all requirements, no field found
-                $ir->addMessage(self::COMPILERSTEP,"Could not find a field declaration, missing tokens: ".implode(', ', $queue));
+                $ir->addMessage(
+                    self::COMPILERSTEP,
+                    "Could not find a field declaration, missing tokens: ".implode(', ', $queue)
+                );
                 return false;
             }
             $node = $ir->getChildren()[$offset];
             $token = $node->getToken();
 
-            if (!in_array($token,self::CAN_CONTAIN)) {
-                $ir->addMessage(self::COMPILERSTEP,"Trying to parse field, found {$token} instead");
+            if (!in_array($token, self::CAN_CONTAIN)) {
+                $ir->addMessage(self::COMPILERSTEP, "Trying to parse field, found {$token} instead");
                 return false;
             }
             $word ? $word .= ' '.$token : $word = $token;
